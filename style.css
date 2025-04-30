@@ -3,37 +3,65 @@ body {
   margin: 0;
   padding: 0;
   background: #f5f5f5;
-  color: #333;
+  color: #633;
 }
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 header {
-  background: #004aad;
+  background: #002aad;
   color: white;
   padding: 20px;
   text-align: center;
 }
+
 .logo {
-  width: 60px;
-  height: 80px;
+  width: 100px;
+  height: auto;
   display: block;
   margin: 0 auto 10px;
 }
+
 nav a {
   color: white;
   margin: 0 15px;
   text-decoration: none;
   font-weight: bold;
 }
+
 section {
   padding: 40px;
   background: white;
-  margin: 20px;
+  margin: 20px 0;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
+
+.section-image {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
 footer {
   background: #004aad;
   color: white;
   text-align: center;
   padding: 10px;
-  margin-top: 20px;
+}
+
+a {
+  color: #004aad;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
