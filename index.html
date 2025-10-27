@@ -1,91 +1,909 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EUFORG</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Euforg - Innovation for Good</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.5rem 5%;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1a1a1a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .hero {
+            margin-top: 80px;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 5%;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-text p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.4s backwards;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .hero-visual {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.6s backwards;
+        }
+
+        .value-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .value-card p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mission {
+            padding: 6rem 5%;
+            background: white;
+        }
+
+        .mission-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .mission-content h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .mission-content p {
+            font-size: 1.3rem;
+            color: #666;
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .services {
+            padding: 6rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            border: 1px solid #f0f0f0;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.15);
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .service-card p {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .service-card ul {
+            margin-top: 1rem;
+            list-style: none;
+        }
+
+        .service-card li {
+            padding: 0.5rem 0;
+            color: #666;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .service-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .capabilities {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 6rem 5%;
+        }
+
+        .capabilities-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .capability-item {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+
+        .capability-item:hover {
+            transform: scale(1.05);
+        }
+
+        .capability-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .capability-item h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .capability-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .approach {
+            padding: 6rem 5%;
+            background: white;
+        }
+
+        .approach-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .approach-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .approach-step {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1.5rem;
+        }
+
+        .approach-step h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .approach-step p {
+            color: #666;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5rem 5%;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 3rem 5%;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #aaa;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: #667eea;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .nav-content {
+                padding: 0;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .cta-button {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .hero {
+                padding: 2rem 1rem;
+                min-height: auto;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.2rem;
+                line-height: 1.2;
+            }
+
+            .hero-text p {
+                font-size: 1.1rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-primary, .btn-secondary {
+                padding: 0.9rem 2rem;
+                font-size: 1rem;
+                width: 100%;
+                max-width: 280px;
+                text-align: center;
+            }
+
+            .hero-visual {
+                grid-template-columns: 1fr;
+            }
+
+            .value-card {
+                padding: 1.5rem;
+            }
+
+            .value-card h3 {
+                font-size: 1.3rem;
+            }
+
+            .mission {
+                padding: 4rem 1.5rem;
+            }
+
+            .mission-content h2 {
+                font-size: 2.2rem;
+            }
+
+            .mission-content p {
+                font-size: 1.1rem;
+            }
+
+            .services {
+                padding: 4rem 1.5rem;
+            }
+
+            .section-header h2 {
+                font-size: 2.2rem;
+            }
+
+            .section-header p {
+                font-size: 1.1rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .service-card {
+                padding: 2rem;
+            }
+
+            .capabilities {
+                padding: 4rem 1.5rem;
+            }
+
+            .capabilities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .capability-item {
+                padding: 2rem;
+            }
+
+            .approach {
+                padding: 4rem 1.5rem;
+            }
+
+            .approach-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-section {
+                padding: 4rem 1.5rem;
+            }
+
+            .cta-content h2 {
+                font-size: 2.2rem;
+            }
+
+            .cta-content p {
+                font-size: 1.1rem;
+            }
+
+            footer {
+                padding: 3rem 1.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 1rem 1rem;
+            }
+
+            .logo {
+                font-size: 1.3rem;
+            }
+
+            .cta-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .hero-text h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .mission-content h2,
+            .cta-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .value-card h3 {
+                font-size: 1.2rem;
+            }
+
+            .service-icon,
+            .capability-icon {
+                font-size: 1.5rem;
+            }
+
+            .step-number {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <img src="logo.png" alt="EUFORG Logo" class="logo" />
-      <h1>Innovation for Good</h1>
-      <nav>
-        <a href="#home">Home</a>
-        <a href="#services">Services</a>
-        <a href="about.html">About Us</a>
-        <a href="#contact">Contact Us</a>
-      </nav>
-    </header>
+    <nav>
+        <div class="nav-content">
+            <div class="logo">EUFORG</div>
+            <ul class="nav-links">
+                <li><a href="#mission">Mission</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#capabilities">Capabilities</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="#contact" class="cta-button">Let's Talk</a>
+        </div>
+    </nav>
 
-    <section id="home">
-      <img src="home.jpg" alt="Home Image" class="section-image" />
-      <h2>Welcome to EUFORG</h2>
-      <p>Redefining tomorrow with smart technology. Euforg blends creativity, innovation, and engineering to deliver products that change the way we live and think.</p>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Building Tomorrow's Solutions Today</h1>
+                <p>We're a fresh startup with ambitious goals: creating sustainable technology solutions that make a real difference. Ready to turn innovative ideas into reality.</p>
+                <div class="hero-buttons">
+                    <a href="#services" class="btn-primary">What We Offer</a>
+                    <a href="#contact" class="btn-secondary">Work With Us</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="value-card">
+                    <h3>🎯 Mission-Driven</h3>
+                    <p>Technology that serves people and planet</p>
+                </div>
+                <div class="value-card">
+                    <h3>🚀 Agile & Adaptive</h3>
+                    <p>Quick to pivot, faster to deliver</p>
+                </div>
+                <div class="value-card">
+                    <h3>💡 Innovation First</h3>
+                    <p>Fresh perspectives on old problems</p>
+                </div>
+                <div class="value-card">
+                    <h3>🤝 Partnership Minded</h3>
+                    <p>Your success is our success</p>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="services">
-      <img src="services.jpg" alt="Services" class="section-image" />
-      <div class="centered-section" id="services">
-        <h2>Our Services</h2>
-        <p>At <strong>Euforg</strong>, we are committed to delivering innovative, customized solutions that enhance everyday life and support sustainable living. Our core areas of expertise include:</p>
-        <h3>Product Development</h3>
-        <p>We specialize in end-to-end design, prototyping, and development of cutting-edge consumer electronics tailored to your unique needs. Our product portfolio includes:</p>
-        <ul>
-          <li><strong>Smart Home Devices</strong> : Automation and control systems that bring convenience and energy savings to modern households.</li>
-          <li><strong>Agriculture Support Products</strong> : Smart irrigation, soil monitoring, and farming aids to boost agricultural efficiency.</li>
-          <li><strong>Life-Saving Devices</strong> : Essential safety and emergency tools designed for timely response and protection.</li>
-          <li><strong>Energy-Efficient Products</strong> : Innovative electronics focused on reducing energy consumption without compromising performance.</li>
-        </ul>
-        <h3>Energy Management Consulting</h3>
-        <p>Our sustainable energy solutions are designed to help you optimize power usage, reduce waste, and transition to greener technologies. Services include:</p>
-        <ul>
-          <li><strong>Solar Panel Installation</strong> : Customized solar solutions for homes, businesses, and institutions.</li>
-          <li><strong>Energy-Efficient Kitchens</strong> : Smart kitchen appliances and layout designs that reduce electricity and gas usage.</li>
-          <li><strong>Water Management Support</strong> : Systems to monitor, control, and conserve water in domestic and commercial settings.</li>
-        </ul>
-        <h3>Technical Consultancy</h3>
-        <p>We offer expert technical support and guidance to bring your concepts to life and streamline your projects, including:</p>
-        <ul>
-          <li><strong>PCB Design & Prototyping</strong> : Custom printed circuit board layouts and fabrication assistance.</li>
-          <li><strong>Embedded Systems Development</strong> : Firmware design and integration for microcontrollers and IoT devices.</li>
-          <li><strong>Electronics Troubleshooting & Support</strong> : Diagnostics, repair advice, and improvements for electronic systems.</li>
-          <li><strong>Training & Mentoring</strong> : Workshops and one-on-one sessions for students, startups, and enterprises exploring new technologies.</li>
-        </ul>
-      </div>
+    <section class="mission" id="mission">
+        <div class="mission-content">
+            <h2>Our Mission</h2>
+            <p>At Euforg, we believe that great technology should enhance everyday life while protecting our planet. We're starting fresh with a clear vision: to develop innovative electronics, energy solutions, and technical services that are both practical and sustainable. As a new venture, we bring fresh energy, modern approaches, and a genuine commitment to making technology work for everyone.</p>
+        </div>
     </section>
 
-    <section id="contact">
-      <img src="contact.jpg" alt="Contact Image" class="section-image" />
-      <h2>Contact Us</h2>
-      <p><strong>Address</strong></p>
-      <p>Euforg</p>
-      <p>Maravnchery,Thavanur</p>
-      <p>Malappuram,Kerala</p>
-      <p>679582</p>
-      <p><strong>Email:</strong> <a href="mailto:info@euforg.com">info@euforg.com</a></p>
-      <p><strong>Phone:</strong> +917594993481</p>
+    <section class="services" id="services">
+        <div class="section-header">
+            <h2>What We Can Build Together</h2>
+            <p>Comprehensive solutions tailored to your needs</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🚀</div>
+                <h3>Product Development</h3>
+                <p>We design and develop custom electronics from concept to prototype, specializing in practical solutions that solve real problems.</p>
+                <ul>
+                    <li>Smart Home Automation Devices</li>
+                    <li>Agriculture Technology Solutions</li>
+                    <li>Safety & Emergency Equipment</li>
+                    <li>Energy-Efficient Electronics</li>
+                </ul>
+            </div>
 
-      <h3>Our Location</h3>
-      <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.7526549315926!2d75.9925367!3d10.8302312!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7bba70c3c2341%3A0xce9d1f313f6a35c5!2sEuforg!5e0!3m2!1sen!2sin!4v1746196665133!5m2!1sen!2sin" 
-        width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy">
-      </iframe>
+            <div class="service-card">
+                <div class="service-icon">⚡</div>
+                <h3>Energy Management</h3>
+                <p>Sustainable energy consulting to help you reduce costs and environmental impact through smart technology choices.</p>
+                <ul>
+                    <li>Solar Power System Design</li>
+                    <li>Energy-Efficient Kitchen Solutions</li>
+                    <li>Smart Water Management</li>
+                    <li>Power Usage Optimization</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🔧</div>
+                <h3>Technical Consultancy</h3>
+                <p>Expert technical support to accelerate your projects with modern best practices and hands-on guidance.</p>
+                <ul>
+                    <li>PCB Design & Rapid Prototyping</li>
+                    <li>Embedded Systems & IoT</li>
+                    <li>Electronics Troubleshooting</li>
+                    <li>Technical Training & Workshops</li>
+                </ul>
+            </div>
+        </div>
     </section>
 
-    <section class="follow-us">
-      <h2>Follow Us</h2>
-      <div class="social-links">
-      <a href="https://www.facebook.com/yourpage" target="_blank">Facebook</a> |
-      <a href="https://www.instagram.com/yourpage" target="_blank">Instagram</a> |
-      <a href="https://www.youtube.com/yourchannel" target="_blank">YouTube</a>
-      </div>
-      </section>
+    <section class="capabilities" id="capabilities">
+        <div class="capabilities-content">
+            <div class="section-header">
+                <h2>Why Start With Us</h2>
+                <p>What we bring to the table as your technology partner</p>
+            </div>
+            <div class="capabilities-grid">
+                <div class="capability-item">
+                    <div class="capability-icon">💪</div>
+                    <h4>Technical Expertise</h4>
+                    <p>Deep knowledge in electronics, embedded systems, and sustainable technology with practical experience across multiple domains.</p>
+                </div>
+                <div class="capability-item">
+                    <div class="capability-icon">🎨</div>
+                    <h4>Custom Solutions</h4>
+                    <p>No cookie-cutter approaches. Every project gets personalized attention and solutions designed specifically for your needs.</p>
+                </div>
+                <div class="capability-item">
+                    <div class="capability-icon">⚡</div>
+                    <h4>Speed & Flexibility</h4>
+                    <p>As a lean startup, we move fast, adapt quickly, and aren't burdened by bureaucracy or rigid processes.</p>
+                </div>
+                <div class="capability-item">
+                    <div class="capability-icon">🌱</div>
+                    <h4>Sustainability Focus</h4>
+                    <p>Every solution considers environmental impact. We build for efficiency, longevity, and minimal ecological footprint.</p>
+                </div>
+                <div class="capability-item">
+                    <div class="capability-icon">💰</div>
+                    <h4>Competitive Pricing</h4>
+                    <p>Fair, transparent pricing without the overhead of larger firms. Great value as we build our portfolio and reputation.</p>
+                </div>
+                <div class="capability-item">
+                    <div class="capability-icon">🎓</div>
+                    <h4>Continuous Learning</h4>
+                    <p>We stay current with latest technologies and best practices, bringing fresh knowledge to every project.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="approach">
+        <div class="approach-content">
+            <div class="section-header">
+                <h2>How We Work</h2>
+                <p>A straightforward approach to bringing ideas to life</p>
+            </div>
+            <div class="approach-grid">
+                <div class="approach-step">
+                    <div class="step-number">1</div>
+                    <h4>Discovery</h4>
+                    <p>We listen to understand your needs, challenges, and goals thoroughly.</p>
+                </div>
+                <div class="approach-step">
+                    <div class="step-number">2</div>
+                    <h4>Design</h4>
+                    <p>Create detailed plans and prototypes with your feedback at every stage.</p>
+                </div>
+                <div class="approach-step">
+                    <div class="step-number">3</div>
+                    <h4>Develop</h4>
+                    <p>Build and test solutions using modern tools and proven methodologies.</p>
+                </div>
+                <div class="approach-step">
+                    <div class="step-number">4</div>
+                    <h4>Deliver</h4>
+                    <p>Complete handoff with documentation, training, and ongoing support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="contact">
+        <div class="cta-content">
+            <h2>Let's Create Something Great</h2>
+            <p>Whether you're a business looking for innovative solutions, an investor interested in sustainable technology, or someone with an idea that needs technical expertise—we'd love to hear from you. Let's explore how we can work together.</p>
+            <div class="hero-buttons">
+                <a href="mailto:info@euforg.com" class="btn-primary">Get In Touch</a>
+                <a href="#services" class="btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
 
     <footer>
-      <p>&copy; 2025 EUFORG. All rights reserved.</p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>EUFORG</h4>
+                <p>Innovation for Good</p>
+                <p style="margin-top: 1rem;">A fresh startup building sustainable technology solutions for tomorrow's challenges.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="#mission">Our Mission</a>
+                <a href="#services">Services</a>
+                <a href="#capabilities">Why Choose Us</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h4>Services</h4>
+                <a href="#services">Product Development</a>
+                <a href="#services">Energy Management</a>
+                <a href="#services">Technical Consultancy</a>
+            </div>
+            <div class="footer-section">
+                <h4>Get In Touch</h4>
+                <a href="mailto:info@euforg.com">info@euforg.com</a>
+                <p style="margin-top: 1rem;">Open to partnerships, projects, and investment opportunities.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Euforg. Innovation for Good.</p>
+        </div>
     </footer>
-  </div>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.service-card, .capability-item, .approach-step').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
