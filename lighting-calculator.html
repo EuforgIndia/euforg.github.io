@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Lighting Calculator - Euforg</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 2rem;
+        }
+
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .form-section h3 {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .calc-button {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .calc-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .results-container {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .results-container.show {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .results-header h2 {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eaf6 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+        }
+
+        .result-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-label {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .recommendations {
+            background: #f9f9f9;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .recommendations h3 {
+            font-size: 1.8rem;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+
+        .recommendation-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .recommendation-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+        }
+
+        .recommendation-item p {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .cta-box h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-box p {
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+            font-size: 1.1rem;
+        }
+
+        .cta-box a {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .cta-box a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .reset-button {
+            width: 100%;
+            padding: 1rem;
+            background: #f0f0f0;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .reset-button:hover {
+            background: #e0e0e0;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            animation: pulse 2s infinite;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.7);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 5px 20px rgba(37, 211, 102, 0.5);
+            }
+            50% {
+                box-shadow: 0 5px 30px rgba(37, 211, 102, 0.8);
+            }
+        }
+
+        .footer {
+            background: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .social-links a:hover {
+            background: #764ba2;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .calculator-card,
+            .results-container {
+                padding: 1.5rem;
+            }
+
+            .dimensions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-section h3 {
+                font-size: 1.3rem;
+            }
+
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 25px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <div class="header">
+            <h1>💡 Smart Lighting Calculator</h1>
+            <p>Get professional lighting recommendations for your space</p>
+        </div>
+
+        <div class="calculator-card">
+            <form id="lightingForm">
+                <!-- Space Type -->
+                <div class="form-section">
+                    <h3>1. Space Information</h3>
+                    <div class="form-group">
+                        <label for="spaceType">What type of space are you lighting? *</label>
+                        <select id="spaceType" required>
+                            <option value="">Choose your space type...</option>
+                            <option value="bedroom">Bedroom</option>
+                            <option value="living">Living Room</option>
+                            <option value="kitchen">Kitchen</option>
+                            <option value="bathroom">Bathroom</option>
+                            <option value="office">Office / Study</option>
+                            <option value="shop">Retail Shop</option>
+                            <option value="restaurant">Restaurant / Cafe</option>
+                            <option value="warehouse">Warehouse</option>
+                            <option value="workshop">Workshop</option>
+                            <option value="outdoor">Outdoor Area</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Dimensions -->
+                <div class="form-section">
+                    <h3>2. Room Dimensions</h3>
+                    <div class="dimensions-grid">
+                        <div class="form-group">
+                            <label for="length">Length (feet) *</label>
+                            <input type="number" id="length" placeholder="e.g., 15" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="width">Width (feet) *</label>
+                            <input type="number" id="width" placeholder="e.g., 12" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="height">Ceiling Height (feet) *</label>
+                            <input type="number" id="height" placeholder="e.g., 10" min="1" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activities -->
+                <div class="form-section">
+                    <h3>3. How will you use this space?</h3>
+                    <p style="margin-bottom: 1rem; color: #666;">Select all activities that apply:</p>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="reading" class="activity-check">
+                            <span>Reading / Detail Work</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="computer" class="activity-check">
+                            <span>Computer Work</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="display" class="activity-check">
+                            <span>Product Display</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="ambiance" class="activity-check">
+                            <span>Ambiance / Mood</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="cooking" class="activity-check">
+                            <span>Cooking / Prep Work</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="safety" class="activity-check">
+                            <span>Safety / Security</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Natural Light & Budget -->
+                <div class="form-section">
+                    <h3>4. Additional Information</h3>
+                    <div class="form-group">
+                        <label for="naturalLight">Natural light availability *</label>
+                        <select id="naturalLight" required>
+                            <option value="">Choose...</option>
+                            <option value="none">No windows / Very dark</option>
+                            <option value="low">Limited natural light</option>
+                            <option value="medium">Moderate natural light</option>
+                            <option value="high">Lots of windows / Bright</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget">Budget Range (Optional)</label>
+                        <select id="budget">
+                            <option value="">Choose budget range...</option>
+                            <option value="economy">Economy (₹5,000 - ₹15,000)</option>
+                            <option value="standard">Standard (₹15,000 - ₹40,000)</option>
+                            <option value="premium">Premium (₹40,000+)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="calc-button">Calculate My Lighting Needs 💡</button>
+            </form>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-container" id="results">
+            <div class="results-header">
+                <h2>Your Custom Lighting Plan</h2>
+                <p>Professional recommendations based on your specific requirements</p>
+            </div>
+
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-icon">💡</div>
+                    <div class="result-label">Total Lumens</div>
+                    <div class="result-value" id="totalLumens">0</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-icon">🔆</div>
+                    <div class="result-label">LED Fixtures</div>
+                    <div class="result-value" id="fixtureCount">0</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-icon">⚡</div>
+                    <div class="result-label">Total Power</div>
+                    <div class="result-value" id="totalWattage">0W</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-icon">💰</div>
+                    <div class="result-label">Monthly Cost</div>
+                    <div class="result-value" id="monthlyCost">₹0</div>
+                </div>
+            </div>
+
+            <div class="recommendations">
+                <h3>Detailed Recommendations</h3>
+                <div id="recommendationsList"></div>
+            </div>
+
+            <div class="cta-box">
+                <h3>Ready to Transform Your Space?</h3>
+                <p>Our expert team can design and install a complete lighting solution tailored to your needs</p>
+                <a href="mailto:info@euforg.com">Email: info@euforg.com</a>
+                <div style="margin-top: 1rem;">
+                    <a href="https://wa.me/917594993481?text=Hi%20Euforg,%20I%20used%20your%20lighting%20calculator" style="background: #25d366; color: white; padding: 0.8rem 2rem; border-radius: 50px; text-decoration: none; display: inline-block; margin-top: 1rem;">WhatsApp Us</a>
+                </div>
+            </div>
+
+            <button class="reset-button" id="resetBtn">Calculate for Another Space</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>EUFORG</strong> - Innovation for Good</p>
+            <p>Email: <a href="mailto:info@euforg.com">info@euforg.com</a> | Phone: <a href="tel:+917594993481">+91 75949 93481</a></p>
+            <div class="social-links">
+                <a href="https://facebook.com/euforg" target="_blank" title="Facebook">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                </a>
+                <a href="https://instagram.com/euforg" target="_blank" title="Instagram">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+                <a href="https://youtube.com/@euforg" target="_blank" title="YouTube">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/917594993481?text=Hi%20Euforg,%20I%20used%20your%20lighting%20calculator" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">
+        💬
+    </a>
+
+    <script>
+        const form = document.getElementById('lightingForm');
+        const resultsContainer = document.getElementById('results');
+        const resetBtn = document.getElementById('resetBtn');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate required fields
+            const spaceType = document.getElementById('spaceType').value;
+            const length = document.getElementById('length').value;
+            const width = document.getElementById('width').value;
+            const height = document.getElementById('height').value;
+            const naturalLight = document.getElementById('naturalLight').value;
+
+            if (!spaceType || !length || !width || !height || !naturalLight) {
+                alert('Please fill in all required fields marked with *');
+                return;
+            }
+
+            calculateLighting();
+        });
+
+        function calculateLighting() {
+            const spaceType = document.getElementById('spaceType').value;
+            const length = parseFloat(document.getElementById('length').value);
+            const width = parseFloat(document.getElementById('width').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const naturalLight = document.getElementById('naturalLight').value;
+            const activities = Array.from(document.querySelectorAll('.activity-check:checked')).map(cb => cb.value);
+
+            const area = length * width;
+
+            const lumensPerSqFt = {
+                'bedroom': 20,
+                'living': 20,
+                'kitchen': 50,
+                'bathroom': 75,
+                'office': 50,
+                'shop': 50,
+                'restaurant': 30,
+                'warehouse': 30,
+                'workshop': 75,
+                'outdoor': 10
+            };
+
+            let baseLumens = area * (lumensPerSqFt[spaceType] || 30);
+
+            if (activities.includes('reading') || activities.includes('computer')) {
+                baseLumens *= 1.3;
+            }
+            if (activities.includes('display')) {
+                baseLumens *= 1.2;
+            }
+
+            const lightAdjust = {
+                'none': 1.2,
+                'low': 1.1,
+                'medium': 0.9,
+                'high': 0.8
+            };
+            baseLumens *= (lightAdjust[naturalLight] || 1);
+
+            const totalLumens = Math.round(baseLumens);
+            const lumensPerFixture = 800;
+            const fixtureCount = Math.ceil(totalLumens / lumensPerFixture);
+            const wattsPerFixture = 10;
+            const totalWattage = fixtureCount * wattsPerFixture;
+            const hoursPerDay = 8;
+            const costPerKwh = 7;
+            const monthlyCost = Math.round((totalWattage / 1000) * hoursPerDay * 30 * costPerKwh);
+
+            document.getElementById('totalLumens').textContent = totalLumens.toLocaleString();
+            document.getElementById('fixtureCount').textContent = fixtureCount;
+            document.getElementById('totalWattage').textContent = totalWattage + 'W';
+            document.getElementById('monthlyCost').textContent = '₹' + monthlyCost;
+
+            const recommendations = generateRecommendations(spaceType, fixtureCount, activities, area);
+            document.getElementById('recommendationsList').innerHTML = recommendations;
+
+            // Show results
+            resultsContainer.style.display = 'block';
+            resultsContainer.classList.add('show');
+            
+            // Scroll to results
+            setTimeout(() => {
+                resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        function generateRecommendations(spaceType, fixtures, activities, area) {
+            let html = '';
+
+            html += `
+                <div class="recommendation-item">
+                    <h4>🔆 Primary Lighting Setup</h4>
+                    <p>Install ${fixtures} LED panel lights or downlights (10W each) with a color temperature of 4000K-5000K. This provides optimal brightness and energy efficiency for your ${area.toFixed(0)} sq ft space.</p>
+                </div>
+            `;
+
+            if (activities.includes('reading') || activities.includes('computer')) {
+                html += `
+                    <div class="recommendation-item">
+                        <h4>💼 Task Lighting</h4>
+                        <p>Add 2-3 adjustable desk lamps with focused LED bulbs (7W each) for reading and detailed work areas. This reduces eye strain and improves productivity.</p>
+                    </div>
+                `;
+            }
+
+            if (activities.includes('ambiance')) {
+                html += `
+                    <div class="recommendation-item">
+                        <h4>🎨 Ambient Lighting</h4>
+                        <p>Consider adding dimmable LED strips or smart bulbs to create mood lighting. This adds versatility and allows you to adjust brightness for different occasions.</p>
+                    </div>
+                `;
+            }
+
+            html += `
+                <div class="recommendation-item">
+                    <h4>💚 Energy Savings</h4>
+                    <p>Using LED lights instead of traditional bulbs can save you up to 80% on lighting costs. Your setup will pay for itself in approximately 18-24 months through energy savings.</p>
+                </div>
+            `;
+
+            if (spaceType === 'shop' || spaceType === 'restaurant') {
+                html += `
+                    <div class="recommendation-item">
+                        <h4>✨ Professional Tip</h4>
+                        <p>For retail and commercial spaces, proper lighting increases customer engagement by up to 30%. Consider accent lighting for product displays and warm tones (3000K) for a welcoming ambiance.</p>
+                    </div>
+                `;
+            }
+
+            return html;
+        }
+
+        resetBtn.addEventListener('click', () => {
+            form.reset();
+            resultsContainer.style.display = 'none';
+            resultsContainer.classList.remove('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
