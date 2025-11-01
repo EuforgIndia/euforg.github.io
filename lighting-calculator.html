@@ -748,63 +748,297 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Share via WhatsApp
-        function shareViaWhatsApp() {
+        // Download Results as PDF-style HTML
+        function downloadResults() {
             const spaceType = document.getElementById('spaceType').value;
             const length = document.getElementById('length').value;
             const width = document.getElementById('width').value;
+            const height = document.getElementById('height').value;
+            const naturalLight = document.getElementById('naturalLight').value;
             const lumens = document.getElementById('totalLumens').textContent;
             const fixtures = document.getElementById('fixtureCount').textContent;
             const wattage = document.getElementById('totalWattage').textContent;
             const cost = document.getElementById('monthlyCost').textContent;
+            
+            const activities = Array.from(document.querySelectorAll('.activity-check:checked'))
+                .map(cb => cb.nextElementSibling.textContent)
+                .join(', ') || 'None selected';
 
-            const message = `🏠 Lighting Calculator Results from Euforg
+            const date = new Date().toLocaleDateString('en-IN', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
 
-Space Type: ${spaceType}
-Room Size: ${length}ft x ${width}ft
+            const naturalLightMap = {
+                'none': 'No windows / Very dark',
+                'low': 'Limited natural light',
+                'medium': 'Moderate natural light',
+                'high': 'Lots of windows / Bright'
+            };
+            const naturalLightText = naturalLightMap[naturalLight] || naturalLight;
 
-💡 Results:
-• Total Lumens Needed: ${lumens}
-• LED Fixtures Required: ${fixtures} (9W each, 900 lumens, 6500K)
-• Total Power: ${wattage}
-• Monthly Cost: ${cost}
-
-I'd like to discuss this lighting solution further.`;
-
-            const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/917594993481?text=${encodedMessage}`, '_blank');
+            const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lighting Calculation Report - Euforg</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            color: #1a1a1a;
+            line-height: 1.6;
+            background: white;
         }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #667eea;
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+        .header p {
+            color: #666;
+            margin: 5px 0;
+        }
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        .section h2 {
+            color: #667eea;
+            margin-top: 0;
+            font-size: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .info-item {
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #666;
+            font-size: 14px;
+        }
+        .info-value {
+            color: #1a1a1a;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .result-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .result-box .label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .result-box .value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .rec-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+        }
+        .rec-item h3 {
+            margin: 0 0 10px 0;
+            color: #667eea;
+            font-size: 16px;
+        }
+        .rec-item p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .rec-item ul {
+            margin: 10px 0 0 20px;
+            color: #666;
+        }
+        .rec-item li {
+            margin: 5px 0;
+        }
+        .note {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            color: #666;
+        }
+        .footer h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .contact-info {
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        @media print {
+            body { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>&#x1F3E0; Lighting Calculation Report</h1>
+        <p><strong>EUFORG</strong> - Innovation for Good</p>
+        <p>Report Generated: ${date}</p>
+    </div>
 
-        // Share via Email
-        function shareViaEmail() {
-            const spaceType = document.getElementById('spaceType').value;
-            const length = document.getElementById('length').value;
-            const width = document.getElementById('width').value;
-            const lumens = document.getElementById('totalLumens').textContent;
-            const fixtures = document.getElementById('fixtureCount').textContent;
-            const wattage = document.getElementById('totalWattage').textContent;
-            const cost = document.getElementById('monthlyCost').textContent;
+    <div class="section">
+        <h2>&#x1F4CB; Space Details</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">Space Type</div>
+                <div class="info-value">${spaceType.charAt(0).toUpperCase() + spaceType.slice(1)}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Room Dimensions</div>
+                <div class="info-value">${length} ft x ${width} ft</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Ceiling Height</div>
+                <div class="info-value">${height} feet</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Total Area</div>
+                <div class="info-value">${parseFloat(length) * parseFloat(width)} sq ft</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Natural Light</div>
+                <div class="info-value">${naturalLightText}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Activities</div>
+                <div class="info-value">${activities}</div>
+            </div>
+        </div>
+    </div>
 
-            const subject = encodeURIComponent('Lighting Calculator Results - Euforg');
-            const body = encodeURIComponent(`Hi Euforg Team,
+    <div class="section">
+        <h2>&#x1F4A1; Lighting Requirements</h2>
+        <div class="results-grid">
+            <div class="result-box">
+                <div class="label">Total Lumens</div>
+                <div class="value">${lumens}</div>
+            </div>
+            <div class="result-box">
+                <div class="label">LED Fixtures</div>
+                <div class="value">${fixtures}</div>
+            </div>
+            <div class="result-box">
+                <div class="label">Total Power</div>
+                <div class="value">${wattage}</div>
+            </div>
+            <div class="result-box">
+                <div class="label">Monthly Cost</div>
+                <div class="value">${cost}</div>
+            </div>
+        </div>
+    </div>
 
-I used your lighting calculator and would like to discuss the results:
+    <div class="section">
+        <h2>&#x2728; Recommendations</h2>
+        <div class="rec-item">
+            <h3>LED Bulb Specifications</h3>
+            <p>Install ${fixtures} LED bulbs with the following specifications:</p>
+            <ul>
+                <li>Power: 9W per bulb</li>
+                <li>Brightness: 900 lumens per bulb</li>
+                <li>Color Temperature: 6500K (Cool White)</li>
+                <li>Total Power Consumption: ${wattage}</li>
+            </ul>
+        </div>
+        <div class="rec-item">
+            <h3>Energy Savings</h3>
+            <p>Using LED lights instead of traditional incandescent bulbs can save you up to 80% on lighting costs. Your setup will pay for itself in approximately 18-24 months through energy savings.</p>
+        </div>
+        <div class="rec-item">
+            <h3>Installation Tips</h3>
+            <p>For optimal lighting distribution, space the fixtures evenly across the ceiling. Consider using dimmers for added flexibility and further energy savings.</p>
+        </div>
+    </div>
 
-SPACE DETAILS:
-- Space Type: ${spaceType}
-- Room Size: ${length}ft x ${width}ft
+    <div class="note">
+        <strong>&#x1F4CC; Calculation Standards:</strong> This report is based on IES (Illuminating Engineering Society) lighting guidelines and industry best practices for optimal illumination levels.
+    </div>
 
-LIGHTING REQUIREMENTS:
-- Total Lumens Needed: ${lumens}
-- LED Fixtures Required: ${fixtures} bulbs (9W each, 900 lumens, 6500K)
-- Total Power Consumption: ${wattage}
-- Estimated Monthly Cost: ${cost}
+    <div class="footer">
+        <h3>Need Expert Consultation?</h3>
+        <p>Our team can help you design and install the perfect lighting solution</p>
+        <div class="contact-info">
+            <p><strong>Email:</strong> info@euforg.com</p>
+            <p><strong>Phone:</strong> +91 75949 93481</p>
+            <p><strong>WhatsApp:</strong> +91 75949 93481</p>
+        </div>
+        <p style="margin-top: 20px; font-size: 12px;">&copy; 2025 Euforg - Innovation for Good</p>
+    </div>
+</body>
+</html>`;
 
-I'm interested in getting a detailed consultation and quote for implementing this lighting solution.
-
-Thank you!`);
-
-            window.location.href = `mailto:info@euforg.com?subject=${subject}&body=${body}`;
+            try {
+                // Create blob and download
+                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                const filename = 'Euforg_Lighting_Report_' + new Date().toISOString().split('T')[0] + '.html';
+                
+                link.href = url;
+                link.download = filename;
+                link.style.display = 'none';
+                
+                document.body.appendChild(link);
+                link.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                alert('Report downloaded successfully! You can open it in any browser or print it as PDF.');
+            } catch (error) {
+                console.error('Download error:', error);
+                alert('Download failed. Please try again or contact us directly.');
+            }
         }
     </script>
 </body>
