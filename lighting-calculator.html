@@ -423,6 +423,9 @@
         <div class="header">
             <h1>💡 Smart Lighting Calculator</h1>
             <p>Get professional lighting recommendations for your space</p>
+            <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 10px; margin-top: 1rem; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto;">
+                <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;"><strong>Note:</strong> This calculator uses industry-standard lighting levels based on IES (Illuminating Engineering Society) guidelines. Calculations assume 9W LED bulbs producing 900 lumens at 6500K (cool white) for optimal energy efficiency and brightness.</p>
+            </div>
         </div>
 
         <div class="calculator-card">
@@ -501,24 +504,15 @@
 
                 <!-- Natural Light & Budget -->
                 <div class="form-section">
-                    <h3>4. Additional Information</h3>
+                    <h3>4. Natural Light Availability</h3>
                     <div class="form-group">
-                        <label for="naturalLight">Natural light availability *</label>
+                        <label for="naturalLight">How much natural light does the space get? *</label>
                         <select id="naturalLight" required>
                             <option value="">Choose...</option>
                             <option value="none">No windows / Very dark</option>
                             <option value="low">Limited natural light</option>
                             <option value="medium">Moderate natural light</option>
                             <option value="high">Lots of windows / Bright</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="budget">Budget Range (Optional)</label>
-                        <select id="budget">
-                            <option value="">Choose budget range...</option>
-                            <option value="economy">Economy (₹5,000 - ₹15,000)</option>
-                            <option value="standard">Standard (₹15,000 - ₹40,000)</option>
-                            <option value="premium">Premium (₹40,000+)</option>
                         </select>
                     </div>
                 </div>
@@ -564,10 +558,14 @@
 
             <div class="cta-box">
                 <h3>Ready to Transform Your Space?</h3>
-                <p>Our expert team can design and install a complete lighting solution tailored to your needs</p>
-                <a href="mailto:info@euforg.com">Email: info@euforg.com</a>
-                <div style="margin-top: 1rem;">
-                    <a href="https://wa.me/917594993481?text=Hi%20Euforg,%20I%20used%20your%20lighting%20calculator" style="background: #25d366; color: white; padding: 0.8rem 2rem; border-radius: 50px; text-decoration: none; display: inline-block; margin-top: 1rem;">WhatsApp Us</a>
+                <p>Share your results with us for a detailed consultation and customized quote</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+                    <button onclick="shareViaWhatsApp()" style="background: #25d366; color: white; padding: 1rem 2rem; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; font-size: 1rem;">
+                        📱 Share via WhatsApp
+                    </button>
+                    <button onclick="shareViaEmail()" style="background: white; color: #667eea; padding: 1rem 2rem; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; font-size: 1rem;">
+                        📧 Email Results
+                    </button>
                 </div>
             </div>
 
@@ -667,9 +665,9 @@
             baseLumens *= (lightAdjust[naturalLight] || 1);
 
             const totalLumens = Math.round(baseLumens);
-            const lumensPerFixture = 800;
+            const lumensPerFixture = 900;  // 9W LED bulb = 900 lumens
             const fixtureCount = Math.ceil(totalLumens / lumensPerFixture);
-            const wattsPerFixture = 10;
+            const wattsPerFixture = 9;  // 9W LED bulbs
             const totalWattage = fixtureCount * wattsPerFixture;
             const hoursPerDay = 8;
             const costPerKwh = 7;
@@ -699,7 +697,7 @@
             html += `
                 <div class="recommendation-item">
                     <h4>🔆 Primary Lighting Setup</h4>
-                    <p>Install ${fixtures} LED panel lights or downlights (10W each) with a color temperature of 4000K-5000K. This provides optimal brightness and energy efficiency for your ${area.toFixed(0)} sq ft space.</p>
+                    <p>Install ${fixtures} LED bulbs (9W each, 900 lumens, 6500K cool white) for your ${area.toFixed(0)} sq ft space. These energy-efficient bulbs provide optimal brightness while consuming minimal power.</p>
                 </div>
             `;
 
@@ -746,6 +744,65 @@
             resultsContainer.classList.remove('show');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+
+        // Share via WhatsApp
+        function shareViaWhatsApp() {
+            const spaceType = document.getElementById('spaceType').value;
+            const length = document.getElementById('length').value;
+            const width = document.getElementById('width').value;
+            const lumens = document.getElementById('totalLumens').textContent;
+            const fixtures = document.getElementById('fixtureCount').textContent;
+            const wattage = document.getElementById('totalWattage').textContent;
+            const cost = document.getElementById('monthlyCost').textContent;
+
+            const message = `🏠 Lighting Calculator Results from Euforg
+
+Space Type: ${spaceType}
+Room Size: ${length}ft x ${width}ft
+
+💡 Results:
+• Total Lumens Needed: ${lumens}
+• LED Fixtures Required: ${fixtures} (9W each, 900 lumens, 6500K)
+• Total Power: ${wattage}
+• Monthly Cost: ${cost}
+
+I'd like to discuss this lighting solution further.`;
+
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/917594993481?text=${encodedMessage}`, '_blank');
+        }
+
+        // Share via Email
+        function shareViaEmail() {
+            const spaceType = document.getElementById('spaceType').value;
+            const length = document.getElementById('length').value;
+            const width = document.getElementById('width').value;
+            const lumens = document.getElementById('totalLumens').textContent;
+            const fixtures = document.getElementById('fixtureCount').textContent;
+            const wattage = document.getElementById('totalWattage').textContent;
+            const cost = document.getElementById('monthlyCost').textContent;
+
+            const subject = encodeURIComponent('Lighting Calculator Results - Euforg');
+            const body = encodeURIComponent(`Hi Euforg Team,
+
+I used your lighting calculator and would like to discuss the results:
+
+SPACE DETAILS:
+- Space Type: ${spaceType}
+- Room Size: ${length}ft x ${width}ft
+
+LIGHTING REQUIREMENTS:
+- Total Lumens Needed: ${lumens}
+- LED Fixtures Required: ${fixtures} bulbs (9W each, 900 lumens, 6500K)
+- Total Power Consumption: ${wattage}
+- Estimated Monthly Cost: ${cost}
+
+I'm interested in getting a detailed consultation and quote for implementing this lighting solution.
+
+Thank you!`);
+
+            window.location.href = `mailto:info@euforg.com?subject=${subject}&body=${body}`;
+        }
     </script>
 </body>
 </html>
