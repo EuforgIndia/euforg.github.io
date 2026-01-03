@@ -7,6 +7,7 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
+        <link rel="icon" type="image/png" href="images/euforg-logo.png">
         gtag('config', 'G-0JGLRW3HCL');
     </script>
     <meta charset="UTF-8">
@@ -48,10 +49,23 @@
         .logo {
             font-size: 1.8rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f5a623 0%, #f7b733 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
         }
 
         .nav-links {
@@ -72,7 +86,7 @@
         }
 
         .cta-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f5a623 0%, #f7b733 100%);
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 50px;
@@ -83,7 +97,7 @@
 
         .cta-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 25px rgba(245, 166, 35, 0.4);
         }
 
         .hero {
@@ -463,6 +477,15 @@
         .footer-section h4 {
             margin-bottom: 1.5rem;
             font-size: 1.3rem;
+            color: #f5a623;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-logo-img {
+            height: 45px;
+            width: auto;
         }
 
         .footer-section p, .footer-section a {
@@ -742,7 +765,10 @@
 <body>
     <nav>
         <div class="nav-content">
-            <div class="logo">EUFORG</div>
+            <div class="logo">
+                <img src="images/euforg-logo.png" alt="Euforg Logo" style="height: 60px; width: auto; vertical-align: middle; margin-right: 10px;">
+                EUFORG
+            </div>
             <ul class="nav-links">
                 <li><a href="#mission">Mission</a></li>
                 <li><a href="#services">Services</a></li>
@@ -921,7 +947,10 @@
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h4>EUFORG</h4>
+                <h4 style="display: flex; align-items: center; gap: 10px;">
+                    <img src="images/euforg-logo.png" alt="Euforg" style="height: 45px; width: auto;">
+                    EUFORG
+                </h4>
                 <p>Innovation for Good</p>
                 <p style="margin-top: 1rem;">A fresh startup building sustainable technology solutions for tomorrow's challenges.</p>
             </div>
