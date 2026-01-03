@@ -1,831 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0JGLRW3HCL"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-0JGLRW3HCL');
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Euforg - Innovation for Good</title>
+    <link rel="icon" type="image/png" href="/images/euforg-logo.png">
     <style>
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;l
+            box-sizing: border-box;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
-            color: #1a1a1a;
-            overflow-x: hidden;
+            color: #333;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1.5rem 5%;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
-        }
-
-        .nav-content {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
             display: flex;
-            gap: 2.5rem;
-            list-style: none;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .nav-links a {
+        .logo img {
+            height: 50px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f5a623;
             text-decoration: none;
-            color: #1a1a1a;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
             font-weight: 500;
             transition: color 0.3s;
         }
 
-        .nav-links a:hover {
-            color: #667eea;
+        nav a:hover {
+            color: #f5a623;
         }
 
         .cta-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5a623;
             color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
             text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: background 0.3s;
         }
 
         .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            background: #e09615;
         }
 
+        /* Hero Section */
         .hero {
-            margin-top: 80px;
-            min-height: 90vh;
-            display: flex;
-            align-items: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            position: relative;
-            overflow: hidden;
-            padding: 2rem 5%;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: moveGrid 20s linear infinite;
-        }
-
-        @keyframes moveGrid {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        .hero-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-text h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            animation: fadeInUp 0.8s ease;
-        }
-
-        .hero-text p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
-            animation: fadeInUp 0.8s ease 0.2s backwards;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1.5rem;
-            animation: fadeInUp 0.8s ease 0.4s backwards;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary, .btn-secondary {
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            font-size: 1.1rem;
-        }
-
-        .btn-primary {
-            background: white;
-            color: #667eea;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-secondary:hover {
-            background: white;
-            color: #667eea;
-        }
-
-        .hero-visual {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            animation: fadeInUp 0.8s ease 0.6s backwards;
-        }
-
-        .value-card {
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: transform 0.3s;
-        }
-
-        .value-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .value-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .value-card p {
-            opacity: 0.9;
-            font-size: 0.95rem;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .mission {
-            padding: 6rem 5%;
-            background: white;
-        }
-
-        .mission-content {
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 6rem 2rem;
             text-align: center;
         }
 
-        .mission-content h2 {
-            font-size: 3rem;
-            margin-bottom: 2rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .mission-content p {
-            font-size: 1.3rem;
-            color: #666;
-            line-height: 1.8;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .services {
-            padding: 6rem 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-header h2 {
+        .hero h1 {
             font-size: 3rem;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
-        .section-header p {
+        .hero p {
             font-size: 1.2rem;
-            color: #666;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .services-grid {
+        /* Features Grid */
+        .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            text-align: center;
+            border-radius: 10px;
+            background: #f8f9fa;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            color: #f5a623;
+        }
+
+        /* Services Section */
+        .services {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .services h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
 
         .service-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            transition: all 0.3s;
-            border: 1px solid #f0f0f0;
+            padding: 2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            transition: border-color 0.3s;
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.15);
+            border-color: #f5a623;
         }
 
         .service-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #1a1a1a;
-        }
-
-        .service-card p {
-            color: #666;
-            line-height: 1.7;
-            margin-bottom: 1rem;
-        }
-
-        .service-card ul {
-            margin-top: 1rem;
-            list-style: none;
-        }
-
-        .service-card li {
-            padding: 0.5rem 0;
-            color: #666;
-            position: relative;
-            padding-left: 1.5rem;
-        }
-
-        .service-card li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: #667eea;
-            font-weight: bold;
-        }
-
-        .capabilities {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 6rem 5%;
-        }
-
-        .capabilities-content {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .capabilities-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .capability-item {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 15px;
-            transition: transform 0.3s;
-        }
-
-        .capability-item:hover {
-            transform: scale(1.05);
-        }
-
-        .capability-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
         }
 
-        .capability-item h4 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: #1a1a1a;
-        }
-
-        .capability-item p {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .approach {
-            padding: 6rem 5%;
-            background: white;
-        }
-
-        .approach-content {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .approach-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .approach-step {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0 auto 1.5rem;
-        }
-
-        .approach-step h4 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-        }
-
-        .approach-step p {
-            color: #666;
-        }
-
-        .cta-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 5rem 5%;
-            text-align: center;
-        }
-
-        .cta-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .cta-content h2 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .cta-content p {
-            font-size: 1.3rem;
-            margin-bottom: 2.5rem;
-            opacity: 0.95;
-        }
-
+        /* Footer */
         footer {
-            background: #1a1a1a;
+            background: #2c3e50;
             color: white;
-            padding: 3rem 5%;
+            padding: 3rem 2rem 1rem;
+            margin-top: 4rem;
         }
 
         .footer-content {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
 
-        .footer-section h4 {
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-        }
-
-        .footer-section p, .footer-section a {
-            color: #aaa;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-section a:hover {
-            color: #667eea;
-        }
-
-        .social-links {
+        .footer-section {
             display: flex;
+            flex-direction: column;
             gap: 1rem;
-            margin-top: 1rem;
         }
 
-        .social-links a {
-            width: 40px;
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo img {
             height: 40px;
-            border-radius: 50%;
-            background: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
+            width: auto;
+        }
+
+        .footer-logo-text {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        footer h4 {
+            color: #f5a623;
+            margin-bottom: 1rem;
+        }
+
+        footer a {
+            color: #ecf0f1;
             text-decoration: none;
-            transition: all 0.3s;
-            font-size: 1.2rem;
+            transition: color 0.3s;
         }
 
-        .social-links a:hover {
-            background: #667eea;
-            transform: translateY(-3px);
+        footer a:hover {
+            color: #f5a623;
         }
 
-        .footer-bottom {
+        .copyright {
             text-align: center;
-            margin-top: 3rem;
             padding-top: 2rem;
-            border-top: 1px solid #333;
-            color: #666;
+            border-top: 1px solid #34495e;
+            color: #95a5a6;
         }
 
-        .whatsapp-float {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            bottom: 30px;
-            right: 30px;
-            background-color: #25d366;
-            color: white;
-            border-radius: 50%;
-            text-align: center;
-            font-size: 30px;
-            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.5);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: all 0.3s;
-            animation: pulse 2s infinite;
-        }
-
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.7);
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 5px 20px rgba(37, 211, 102, 0.5);
-            }
-            50% {
-                box-shadow: 0 5px 30px rgba(37, 211, 102, 0.8);
-            }
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            .nav-content {
-                padding: 0;
+            .hero h1 {
+                font-size: 2rem;
             }
 
-            .logo {
-                font-size: 1.5rem;
-            }
-
-            .nav-links {
+            nav ul {
                 display: none;
             }
 
-            .cta-button {
-                padding: 0.6rem 1.2rem;
-                font-size: 0.9rem;
+            .logo img {
+                height: 40px;
             }
 
-            .hero {
-                padding: 2rem 1rem;
-                min-height: auto;
-            }
-
-            .hero-content {
+            .features {
                 grid-template-columns: 1fr;
-                text-align: center;
-                gap: 2rem;
-            }
-
-            .hero-text h1 {
-                font-size: 2.2rem;
-                line-height: 1.2;
-            }
-
-            .hero-text p {
-                font-size: 1.1rem;
-            }
-
-            .hero-buttons {
-                justify-content: center;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .btn-primary, .btn-secondary {
-                padding: 0.9rem 2rem;
-                font-size: 1rem;
-                width: 100%;
-                max-width: 280px;
-                text-align: center;
-            }
-
-            .hero-visual {
-                grid-template-columns: 1fr;
-            }
-
-            .value-card {
-                padding: 1.5rem;
-            }
-
-            .value-card h3 {
-                font-size: 1.3rem;
-            }
-
-            .mission {
-                padding: 4rem 1.5rem;
-            }
-
-            .mission-content h2 {
-                font-size: 2.2rem;
-            }
-
-            .mission-content p {
-                font-size: 1.1rem;
-            }
-
-            .services {
-                padding: 4rem 1.5rem;
-            }
-
-            .section-header h2 {
-                font-size: 2.2rem;
-            }
-
-            .section-header p {
-                font-size: 1.1rem;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .service-card {
-                padding: 2rem;
-            }
-
-            .capabilities {
-                padding: 4rem 1.5rem;
-            }
-
-            .capabilities-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .capability-item {
-                padding: 2rem;
-            }
-
-            .approach {
-                padding: 4rem 1.5rem;
-            }
-
-            .approach-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .whatsapp-float {
-                width: 50px;
-                height: 50px;
-                font-size: 25px;
-                bottom: 20px;
-                right: 20px;
-            }
-
-            .cta-section {
-                padding: 4rem 1.5rem;
-            }
-
-            .cta-content h2 {
-                font-size: 2.2rem;
-            }
-
-            .cta-content p {
-                font-size: 1.1rem;
-            }
-
-            footer {
-                padding: 3rem 1.5rem;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            nav {
-                padding: 1rem 1rem;
-            }
-
-            .logo {
-                font-size: 1.3rem;
-            }
-
-            .cta-button {
-                padding: 0.5rem 1rem;
-                font-size: 0.85rem;
-            }
-
-            .hero-text h1 {
-                font-size: 1.8rem;
-            }
-
-            .hero-text p {
-                font-size: 1rem;
-            }
-
-            .section-header h2 {
-                font-size: 1.8rem;
-            }
-
-            .mission-content h2,
-            .cta-content h2 {
-                font-size: 1.8rem;
-            }
-
-            .value-card h3 {
-                font-size: 1.2rem;
-            }
-
-            .service-icon,
-            .capability-icon {
-                font-size: 1.5rem;
-            }
-
-            .step-number {
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
             }
         }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-content">
-            <div class="logo">EUFORG</div>
-            <ul class="nav-links">
+    <!-- Header with Logo -->
+    <header>
+        <nav>
+            <div class="logo">
+                <!-- REPLACE THIS PATH WITH YOUR ACTUAL LOGO PATH -->
+                <a href="/">
+                    <img src="/images/euforg-logo.png" alt="Euforg Logo">
+                </a>
+                <a href="/" class="logo-text">EUFORG</a>
+            </div>
+            <ul>
                 <li><a href="#mission">Mission</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#capabilities">Capabilities</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
             <a href="#contact" class="cta-button">Let's Talk</a>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1>Building Tomorrow's Solutions Today</h1>
-                <p>We're a fresh startup with ambitious goals: creating sustainable technology solutions that make a real difference. Ready to turn innovative ideas into reality.</p>
-                <div class="hero-buttons">
-                    <a href="#services" class="btn-primary">What We Offer</a>
-                    <a href="lighting-calculator.html" class="btn-secondary">Lighting Calculator 💡</a>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="value-card">
-                    <h3>🎯 Mission-Driven</h3>
-                    <p>Technology that serves people and planet</p>
-                </div>
-                <div class="value-card">
-                    <h3>🚀 Agile & Adaptive</h3>
-                    <p>Quick to pivot, faster to deliver</p>
-                </div>
-                <div class="value-card">
-                    <h3>💡 Innovation First</h3>
-                    <p>Fresh perspectives on old problems</p>
-                </div>
-                <div class="value-card">
-                    <h3>🤝 Partnership Minded</h3>
-                    <p>Your success is our success</p>
-                </div>
-            </div>
+        <h1>Building Tomorrow's Solutions Today</h1>
+        <p>We're a fresh startup with ambitious goals: creating sustainable technology solutions that make a real difference. Ready to turn innovative ideas into reality.</p>
+        <a href="#services" class="cta-button" style="display: inline-block; margin-top: 1rem;">What We Offer</a>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="feature-card">
+            <div class="service-icon">🎯</div>
+            <h3>Mission-Driven</h3>
+            <p>Technology that serves people and planet</p>
+        </div>
+        <div class="feature-card">
+            <div class="service-icon">🚀</div>
+            <h3>Agile & Adaptive</h3>
+            <p>Quick to pivot, faster to deliver</p>
+        </div>
+        <div class="feature-card">
+            <div class="service-icon">💡</div>
+            <h3>Innovation First</h3>
+            <p>Fresh perspectives on old problems</p>
+        </div>
+        <div class="feature-card">
+            <div class="service-icon">🤝</div>
+            <h3>Partnership Minded</h3>
+            <p>Your success is our success</p>
         </div>
     </section>
 
-    <section class="mission" id="mission">
-        <div class="mission-content">
-            <h2>Our Mission</h2>
-            <p>At Euforg, we believe that great technology should enhance everyday life while protecting our planet. We're starting fresh with a clear vision: to develop innovative electronics, energy solutions, and technical services that are both practical and sustainable. As a new venture, we bring fresh energy, modern approaches, and a genuine commitment to making technology work for everyone.</p>
-        </div>
-    </section>
-
-    <section class="services" id="services">
-        <div class="section-header">
-            <h2>What We Can Build Together</h2>
-            <p>Comprehensive solutions tailored to your needs</p>
-        </div>
-        <div class="services-grid">
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <h2>What We Can Build Together</h2>
+        <div class="service-grid">
             <div class="service-card">
                 <div class="service-icon">🚀</div>
                 <h3>Product Development</h3>
                 <p>We design and develop custom electronics from concept to prototype, specializing in practical solutions that solve real problems.</p>
-                <ul>
+                <ul style="text-align: left; margin-top: 1rem;">
                     <li>Smart Home Automation Devices</li>
                     <li>Agriculture Technology Solutions</li>
                     <li>Safety & Emergency Equipment</li>
                     <li>Energy-Efficient Electronics</li>
                 </ul>
             </div>
-
             <div class="service-card">
                 <div class="service-icon">⚡</div>
                 <h3>Energy Management</h3>
                 <p>Sustainable energy consulting to help you reduce costs and environmental impact through smart technology choices.</p>
-                <ul>
+                <ul style="text-align: left; margin-top: 1rem;">
                     <li>Solar Power System Design</li>
                     <li>Energy-Efficient Kitchen Solutions</li>
                     <li>Smart Water Management</li>
                     <li>Power Usage Optimization</li>
                 </ul>
             </div>
-
             <div class="service-card">
                 <div class="service-icon">🔧</div>
                 <h3>Technical Consultancy</h3>
                 <p>Expert technical support to accelerate your projects with modern best practices and hands-on guidance.</p>
-                <ul>
+                <ul style="text-align: left; margin-top: 1rem;">
                     <li>PCB Design & Rapid Prototyping</li>
                     <li>Embedded Systems & IoT</li>
                     <li>Electronics Troubleshooting</li>
@@ -835,96 +349,19 @@
         </div>
     </section>
 
-    <section class="capabilities" id="capabilities">
-        <div class="capabilities-content">
-            <div class="section-header">
-                <h2>Why Start With Us</h2>
-                <p>What we bring to the table as your technology partner</p>
-            </div>
-            <div class="capabilities-grid">
-                <div class="capability-item">
-                    <div class="capability-icon">💪</div>
-                    <h4>Technical Expertise</h4>
-                    <p>Deep knowledge in electronics, embedded systems, and sustainable technology with practical experience across multiple domains.</p>
-                </div>
-                <div class="capability-item">
-                    <div class="capability-icon">🎨</div>
-                    <h4>Custom Solutions</h4>
-                    <p>No cookie-cutter approaches. Every project gets personalized attention and solutions designed specifically for your needs.</p>
-                </div>
-                <div class="capability-item">
-                    <div class="capability-icon">⚡</div>
-                    <h4>Speed & Flexibility</h4>
-                    <p>As a lean startup, we move fast, adapt quickly, and aren't burdened by bureaucracy or rigid processes.</p>
-                </div>
-                <div class="capability-item">
-                    <div class="capability-icon">🌱</div>
-                    <h4>Sustainability Focus</h4>
-                    <p>Every solution considers environmental impact. We build for efficiency, longevity, and minimal ecological footprint.</p>
-                </div>
-                <div class="capability-item">
-                    <div class="capability-icon">💰</div>
-                    <h4>Competitive Pricing</h4>
-                    <p>Fair, transparent pricing without the overhead of larger firms. Great value as we build our portfolio and reputation.</p>
-                </div>
-                <div class="capability-item">
-                    <div class="capability-icon">🎓</div>
-                    <h4>Continuous Learning</h4>
-                    <p>We stay current with latest technologies and best practices, bringing fresh knowledge to every project.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="approach">
-        <div class="approach-content">
-            <div class="section-header">
-                <h2>How We Work</h2>
-                <p>A straightforward approach to bringing ideas to life</p>
-            </div>
-            <div class="approach-grid">
-                <div class="approach-step">
-                    <div class="step-number">1</div>
-                    <h4>Discovery</h4>
-                    <p>We listen to understand your needs, challenges, and goals thoroughly.</p>
-                </div>
-                <div class="approach-step">
-                    <div class="step-number">2</div>
-                    <h4>Design</h4>
-                    <p>Create detailed plans and prototypes with your feedback at every stage.</p>
-                </div>
-                <div class="approach-step">
-                    <div class="step-number">3</div>
-                    <h4>Develop</h4>
-                    <p>Build and test solutions using modern tools and proven methodologies.</p>
-                </div>
-                <div class="approach-step">
-                    <div class="step-number">4</div>
-                    <h4>Deliver</h4>
-                    <p>Complete handoff with documentation, training, and ongoing support.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta-section" id="contact">
-        <div class="cta-content">
-            <h2>Let's Create Something Great</h2>
-            <p>Whether you're a business looking for innovative solutions, an investor interested in sustainable technology, or someone with an idea that needs technical expertise—we'd love to hear from you.</p>
-            <div class="hero-buttons">
-                <a href="mailto:info@euforg.com" class="btn-primary">Email Us</a>
-                <a href="https://wa.me/917594993481?text=Hi%20Euforg,%20I'm%20interested%20in%20your%20services" target="_blank" class="btn-secondary">WhatsApp Us</a>
-            </div>
-        </div>
-    </section>
-
+    <!-- Footer with Logo -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h4>EUFORG</h4>
+                <div class="footer-logo">
+                    <!-- REPLACE THIS PATH WITH YOUR ACTUAL LOGO PATH -->
+                    <img src="/images/euforg-logo.png" alt="Euforg">
+                    <span class="footer-logo-text">EUFORG</span>
+                </div>
                 <p>Innovation for Good</p>
-                <p style="margin-top: 1rem;">A fresh startup building sustainable technology solutions for tomorrow's challenges.</p>
+                <p>A fresh startup building sustainable technology solutions for tomorrow's challenges.</p>
             </div>
+            
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <a href="#mission">Our Mission</a>
@@ -932,76 +369,32 @@
                 <a href="#capabilities">Why Choose Us</a>
                 <a href="#contact">Contact</a>
             </div>
+            
             <div class="footer-section">
                 <h4>Services</h4>
                 <a href="#services">Product Development</a>
                 <a href="#services">Energy Management</a>
                 <a href="#services">Technical Consultancy</a>
             </div>
+            
             <div class="footer-section">
                 <h4>Get In Touch</h4>
                 <a href="mailto:info@euforg.com">info@euforg.com</a>
                 <a href="tel:+917594993481">+91 75949 93481</a>
-                <p style="margin-top: 1rem;">Open to partnerships, projects, and investment opportunities.</p>
-                <div class="social-links">
-                    <a href="https://facebook.com/euforg" target="_blank" title="Facebook">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                        </svg>
-                    </a>
-                    <a href="https://instagram.com/euforg" target="_blank" title="Instagram">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                    </a>
-                    <a href="https://youtube.com/@euforg" target="_blank" title="YouTube">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                        </svg>
-                    </a>
-                </div>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">Open to partnerships, projects, and investment opportunities.</p>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Euforg. Innovation for Good.</p>
+        
+        <div class="copyright">
+            <p>© 2025 Euforg. Innovation for Good.</p>
         </div>
     </footer>
 
-    <a href="https://wa.me/917594993481?text=Hi%20Euforg,%20I'm%20interested%20in%20your%20services" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/917594993481?text=Hi%20Euforg,%20I'm%20interested%20in%20your%20services" 
+       style="position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000;"
+       title="Chat with us on WhatsApp">
         💬
     </a>
-
-    <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.service-card, .capability-item, .approach-step').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.6s ease';
-            observer.observe(el);
-        });
-    </script>
 </body>
 </html>
