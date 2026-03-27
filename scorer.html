@@ -739,26 +739,43 @@
 
   function shareWhatsApp() {
     var text = buildShareText();
+
+    // Option 1: Web Share API — works in Android WebView + mobile browsers
+    // Opens native share sheet where user can pick WhatsApp
+    if (navigator.share) {
+      navigator.share({ text: text })
+        .catch(function(e) { fallbackCopy(text); });
+      return;
+    }
+
+    // Option 2: https wa.me link — works in desktop browsers
     var encoded = encodeURIComponent(text);
-
-    // Try Android intent URL first (works in WebView)
-    var intentUrl = 'intent://send?text=' + encoded + '#Intent;scheme=whatsapp;package=com.whatsapp;end';
-    // Fallback HTTPS URL (works in browser)
-    var httpsUrl = 'https://wa.me/?text=' + encoded;
-
-    // Detect if running inside Android WebView or real browser
-    var isWebView = (typeof Android !== 'undefined') || 
-                    (navigator.userAgent.indexOf('wv') !== -1) ||
-                    (navigator.userAgent.indexOf('WebView') !== -1);
-
     var a = document.createElement('a');
-    a.href = isWebView ? intentUrl : httpsUrl;
+    a.href = 'https://wa.me/?text=' + encoded;
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
     document.body.appendChild(a);
     a.click();
-    setTimeout(function() { document.body.removeChild(a); }, 500);
+    setTimeout(function() { document.body.removeChild(a); }, 300);
   }
+
+  function fallbackCopy(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() {
+        alert('Copied! Now paste it in WhatsApp.');
+      });
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      alert('Copied! Now paste it in WhatsApp.');
+    }
+  }
+
+  
 </script>
 </body>
 </html>
