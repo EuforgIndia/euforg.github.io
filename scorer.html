@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Badminton Score</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Arial, sans-serif; background: #0a0c10; color: #e8edf5; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 20px 16px 40px; }
@@ -739,14 +739,25 @@
 
   function shareWhatsApp() {
     var text = buildShareText();
-    var url = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(text);
+    var encoded = encodeURIComponent(text);
+
+    // Try Android intent URL first (works in WebView)
+    var intentUrl = 'intent://send?text=' + encoded + '#Intent;scheme=whatsapp;package=com.whatsapp;end';
+    // Fallback HTTPS URL (works in browser)
+    var httpsUrl = 'https://wa.me/?text=' + encoded;
+
+    // Detect if running inside Android WebView or real browser
+    var isWebView = (typeof Android !== 'undefined') || 
+                    (navigator.userAgent.indexOf('wv') !== -1) ||
+                    (navigator.userAgent.indexOf('WebView') !== -1);
+
     var a = document.createElement('a');
-    a.href = url;
+    a.href = isWebView ? intentUrl : httpsUrl;
     a.target = '_blank';
-    a.rel = 'noopener';
+    a.rel = 'noopener noreferrer';
     document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
+    setTimeout(function() { document.body.removeChild(a); }, 500);
   }
 </script>
 </body>
