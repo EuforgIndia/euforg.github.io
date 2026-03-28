@@ -77,7 +77,7 @@
     #court { width: 100%; height: 190px; border: 2px solid #2a3346; border-radius: 6px; display: flex; flex-direction: column; overflow: hidden; }
     .court-row { flex: 1; display: flex; }
 
-    /* CELL — tappable to assign player */
+    /* CELL */
     .cell {
       flex: 1;
       display: flex;
@@ -109,7 +109,6 @@
     .cell.active-server .cell-edit-hint { color: rgba(200,247,58,0.4); }
     #court-net { height: 5px; background: #2a3346; flex-shrink: 0; }
 
-    /* team side labels on court sides */
     .court-sides { display: flex; justify-content: space-between; padding: 0 2px; margin-bottom: 4px; }
     .court-side-label { font-size: 9px; letter-spacing: 1px; color: #2a3346; text-transform: uppercase; font-family: 'Courier New', monospace; }
 
@@ -125,6 +124,9 @@
     .btn-point-b { flex: 1; padding: 18px 10px; border-radius: 14px; background: transparent; color: #c8f73a; border: 1.5px solid #c8f73a; font-size: 13px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-family: 'Courier New', monospace; }
     .btn-point-a:disabled, .btn-point-b:disabled { opacity: 0.3; cursor: not-allowed; }
     .btn-point-b:hover:not(:disabled) { background: rgba(200,247,58,0.08); }
+
+    /* RALLY WRAP */
+    .rally-wrap { background: #12161e; border: 1px solid #1e2533; border-radius: 14px; padding: 12px 14px 10px; margin-bottom: 14px; }
 
     /* RALLY DOTS */
     .rally-dots { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; padding: 10px 0 2px; min-height: 22px; }
@@ -155,13 +157,7 @@
     .pick-name { font-size: 14px; font-weight: 900; }
     .pick-divider { height: 1px; background: #1e2533; margin: 4px 0; }
 
-    /* SHARE */
-    .share-result-box { background: #0a0c10; border: 1px solid #1e2533; border-radius: 10px; padding: 16px; font-family: 'Courier New', monospace; font-size: 13px; color: #e8edf5; margin-bottom: 14px; white-space: pre-line; line-height: 1.7; max-height: 220px; overflow-y: auto; }
-    .share-btns { display: flex; gap: 8px; }
-    .share-btns button { flex: 1; padding: 12px; border-radius: 10px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-family: 'Courier New', monospace; }
-    .btn-copy { background: #c8f73a; color: #0a0c10; border: none; }
-    .btn-whatsapp { background: transparent; color: #25D366; border: 1.5px solid #25D366; }
-    .copied-msg { font-size: 11px; color: #c8f73a; text-align: center; font-family: 'Courier New', monospace; letter-spacing: 1px; margin-top: 8px; min-height: 16px; }
+
   </style>
 </head>
 <body>
@@ -185,9 +181,19 @@
         </div>
       </div>
     </div>
+
+    <!-- Team A card -->
     <div class="card">
       <div class="card-top-line"></div>
       <div class="card-title">Team A</div>
+      <!-- Team name input — only shown in doubles -->
+      <div class="doubles-names" id="doublesTeamNameA">
+        <div class="input-group">
+          <label>Team Name</label>
+          <input type="text" id="teamNameA" placeholder="e.g. Eagles" maxlength="20">
+        </div>
+        <div class="section-div">Players</div>
+      </div>
       <div class="input-group">
         <label>Player 1</label>
         <input type="text" id="nameA1" placeholder="e.g. Ali" maxlength="16">
@@ -200,9 +206,19 @@
         </div>
       </div>
     </div>
+
+    <!-- Team B card -->
     <div class="card">
       <div class="card-top-line"></div>
       <div class="card-title">Team B</div>
+      <!-- Team name input — only shown in doubles -->
+      <div class="doubles-names" id="doublesTeamNameB">
+        <div class="input-group">
+          <label>Team Name</label>
+          <input type="text" id="teamNameB" placeholder="e.g. Falcons" maxlength="20">
+        </div>
+        <div class="section-div">Players</div>
+      </div>
       <div class="input-group">
         <label>Player 1</label>
         <input type="text" id="nameB1" placeholder="e.g. Hassan" maxlength="16">
@@ -215,6 +231,7 @@
         </div>
       </div>
     </div>
+
     <button class="btn-primary" onclick="startMatch()">▶ Start Match</button>
   </div>
 
@@ -251,19 +268,26 @@
       </div>
     </div>
 
+    <!-- Rally (moved here, just below scoreboard) -->
+    <div class="rally-wrap" id="rallyWrap">
+      <div class="rally-dots" id="rallyDots"></div>
+      <div class="rally-legend">
+        <div class="rleg"><div class="rleg-dot rdot-a"></div><span id="legA">A</span></div>
+        <div class="rleg"><div class="rleg-dot rdot-b"></div><span id="legB">B</span></div>
+      </div>
+    </div>
+
     <!-- Court -->
     <div class="court-wrap">
       <div class="court-label">Service Court</div>
       <div class="court-hint" id="courtHint">Tap any box to assign a player</div>
 
-      <!-- B side labels -->
       <div class="court-sides">
         <div class="court-side-label" id="labelBLeft">← B side</div>
         <div class="court-side-label" id="labelBRight">B side →</div>
       </div>
 
       <div id="court">
-        <!-- Team B row (top) -->
         <div class="court-row">
           <div class="cell" id="B-left" onclick="openPositionPicker('B-left')" style="border-right:2px solid #2a3346">
             <span class="cell-name" id="cell-name-B-left">—</span>
@@ -275,7 +299,6 @@
           </div>
         </div>
         <div id="court-net"></div>
-        <!-- Team A row (bottom) -->
         <div class="court-row">
           <div class="cell" id="A-left" onclick="openPositionPicker('A-left')" style="border-right:2px solid #2a3346">
             <span class="cell-name" id="cell-name-A-left">—</span>
@@ -288,7 +311,6 @@
         </div>
       </div>
 
-      <!-- A side labels -->
       <div class="court-sides" style="margin-top:4px;margin-bottom:0">
         <div class="court-side-label" id="labelALeft">← A side</div>
         <div class="court-side-label" id="labelARight">A side →</div>
@@ -310,11 +332,7 @@
     <button class="btn-share" onclick="openShare()">📤 Share Result</button>
     <button class="btn-ghost" onclick="newMatch()">⟳ New Match</button>
 
-    <div class="rally-dots" id="rallyDots"></div>
-    <div class="rally-legend">
-      <div class="rleg"><div class="rleg-dot rdot-a"></div><span id="legA">A</span></div>
-      <div class="rleg"><div class="rleg-dot rdot-b"></div><span id="legB">B</span></div>
-    </div>
+
   </div>
 
 </div>
@@ -339,46 +357,49 @@
   </div>
 </div>
 
-<!-- SHARE OVERLAY -->
-<div class="overlay" id="shareOverlay" onclick="overlayClickShare(event)">
-  <div class="modal-box">
-    <button class="modal-close-btn" onclick="closeShare()">✕</button>
-    <h3>📤 Share Result</h3>
-    <div class="share-result-box" id="shareText"></div>
-    <div class="share-btns">
-      <button class="btn-copy" onclick="copyResult()">📋 Copy</button>
-      <button class="btn-whatsapp" onclick="shareWhatsApp()">💬 WhatsApp</button>
-    </div>
-    <div class="copied-msg" id="copiedMsg"></div>
-  </div>
-</div>
+<!-- Share toast -->
+<div id="shareToast" style="display:none;position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#1e2533;color:#c8f73a;font-family:'Courier New',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:12px 24px;border-radius:30px;border:1px solid #c8f73a;z-index:999;white-space:nowrap;">📸 Capturing…</div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
   // ── STATE ────────────────────────────────────────────────
   var scoreA = 0, scoreB = 0;
   var gameHistory = [];
   var rallyHistory = [];
-  var currentServer = 'A';       // 'A' or 'B'
-  var currentServerName = '';    // actual player name
+  var currentServer = 'A';
+  var currentServerName = '';
   var gameOver = false;
   var gameType = 'singles';
-  var teamA = { p1: '', p2: '' };
-  var teamB = { p1: '', p2: '' };
+  var teamA = { name: '', p1: '', p2: '' };
+  var teamB = { name: '', p1: '', p2: '' };
 
-  // courtPositions: which player name is assigned to each box
-  // null = unassigned
   var courtPositions = { 'A-left': null, 'A-right': null, 'B-left': null, 'B-right': null };
-
-  // which cell is being edited (for position picker)
   var editingCell = null;
+
+  // ── HELPERS ──────────────────────────────────────────────
+
+  // Returns the display label for a team's point button / legend
+  // In doubles: use custom team name if set, else "Team A" / "Team B"
+  // In singles: use the player's first name
+  function teamLabel(team) {
+    if (gameType === 'doubles') {
+      var obj = team === 'A' ? teamA : teamB;
+      return obj.name || (team === 'A' ? 'Team A' : 'Team B');
+    } else {
+      var obj = team === 'A' ? teamA : teamB;
+      return obj.p1.split(' ')[0];
+    }
+  }
 
   // ── SETUP ────────────────────────────────────────────────
   function selectType(type) {
     gameType = type;
     document.getElementById('btn-singles').className = 'type-btn' + (type === 'singles' ? ' selected' : '');
     document.getElementById('btn-doubles').className = 'type-btn' + (type === 'doubles' ? ' selected' : '');
-    document.getElementById('doublesA').className = 'doubles-names' + (type === 'doubles' ? ' visible' : '');
-    document.getElementById('doublesB').className = 'doubles-names' + (type === 'doubles' ? ' visible' : '');
+    var doublesOnly = ['doublesTeamNameA', 'doublesTeamNameB', 'doublesA', 'doublesB'];
+    for (var i = 0; i < doublesOnly.length; i++) {
+      document.getElementById(doublesOnly[i]).className = 'doubles-names' + (type === 'doubles' ? ' visible' : '');
+    }
   }
 
   function getVal(id) {
@@ -389,42 +410,54 @@
   function startMatch() {
     var a1 = getVal('nameA1') || 'Player A';
     var b1 = getVal('nameB1') || 'Player B';
-    teamA = { p1: a1, p2: gameType === 'doubles' ? (getVal('nameA2') || 'Partner A') : '' };
-    teamB = { p1: b1, p2: gameType === 'doubles' ? (getVal('nameB2') || 'Partner B') : '' };
+
+    teamA = {
+      name: gameType === 'doubles' ? (getVal('teamNameA') || '') : '',
+      p1: a1,
+      p2: gameType === 'doubles' ? (getVal('nameA2') || 'Partner A') : ''
+    };
+    teamB = {
+      name: gameType === 'doubles' ? (getVal('teamNameB') || '') : '',
+      p1: b1,
+      p2: gameType === 'doubles' ? (getVal('nameB2') || 'Partner B') : ''
+    };
 
     scoreA = 0; scoreB = 0;
     gameHistory = []; rallyHistory = []; gameOver = false;
     currentServer = 'A';
     currentServerName = teamA.p1;
 
-    // Default court positions
-    courtPositions = {
-      'A-left':  null,
-      'A-right': teamA.p1,
-      'B-left':  null,
-      'B-right': teamB.p1
-    };
-    // In doubles, put partner on left
+    courtPositions = { 'A-left': null, 'A-right': teamA.p1, 'B-left': null, 'B-right': teamB.p1 };
     if (gameType === 'doubles') {
       courtPositions['A-left'] = teamA.p2 || null;
       courtPositions['B-left'] = teamB.p2 || null;
     }
 
-    // UI
+    // Scoreboard names
     document.getElementById('matchTypeBadge').textContent = gameType === 'singles' ? '🧍 Singles' : '👥 Doubles';
-    document.getElementById('dispA1').textContent = teamA.p1;
-    document.getElementById('dispA2').textContent = teamA.p2 || '';
-    document.getElementById('dispB1').textContent = teamB.p1;
-    document.getElementById('dispB2').textContent = teamB.p2 || '';
 
-    document.getElementById('btnLabelA').textContent = teamA.p1.split(' ')[0];
-    document.getElementById('btnLabelB').textContent = teamB.p1.split(' ')[0];
-    document.getElementById('legA').textContent = teamA.p1.split(' ')[0];
-    document.getElementById('legB').textContent = teamB.p1.split(' ')[0];
+    if (gameType === 'doubles' && teamA.name) {
+      document.getElementById('dispA1').textContent = teamA.name;
+      document.getElementById('dispA2').textContent = teamA.p1 + ' & ' + teamA.p2;
+    } else {
+      document.getElementById('dispA1').textContent = teamA.p1;
+      document.getElementById('dispA2').textContent = teamA.p2 || '';
+    }
+    if (gameType === 'doubles' && teamB.name) {
+      document.getElementById('dispB1').textContent = teamB.name;
+      document.getElementById('dispB2').textContent = teamB.p1 + ' & ' + teamB.p2;
+    } else {
+      document.getElementById('dispB1').textContent = teamB.p1;
+      document.getElementById('dispB2').textContent = teamB.p2 || '';
+    }
 
-    // court hint: only show in doubles
+    // Point button labels & legend
+    document.getElementById('btnLabelA').textContent = teamLabel('A');
+    document.getElementById('btnLabelB').textContent = teamLabel('B');
+    document.getElementById('legA').textContent = teamLabel('A');
+    document.getElementById('legB').textContent = teamLabel('B');
+
     document.getElementById('courtHint').style.display = gameType === 'doubles' ? 'block' : 'none';
-
     document.getElementById('winnerBanner').className = 'winner-banner';
     document.getElementById('winnerName').textContent = '';
     document.getElementById('screen-setup').className = 'screen';
@@ -441,9 +474,9 @@
   // ── POSITION PICKER ──────────────────────────────────────
   function openPositionPicker(cellId) {
     editingCell = cellId;
-    var team = cellId.charAt(0); // 'A' or 'B'
+    var team = cellId.charAt(0);
     var obj = team === 'A' ? teamA : teamB;
-    var side = cellId.split('-')[1]; // 'left' or 'right'
+    var side = cellId.split('-')[1];
 
     document.getElementById('posSubTitle').textContent =
       (team === 'A' ? 'Team A' : 'Team B') + ' — ' + (side === 'left' ? 'Left box' : 'Right box');
@@ -451,10 +484,9 @@
     var list = document.getElementById('pickList');
     list.innerHTML = '';
 
-    // Choices: p1, p2 (if doubles), and "Empty"
     var choices = [obj.p1];
     if (gameType === 'doubles' && obj.p2) choices.push(obj.p2);
-    choices.push(null); // empty option
+    choices.push(null);
 
     for (var i = 0; i < choices.length; i++) {
       var name = choices[i];
@@ -462,18 +494,15 @@
       var btn = document.createElement('button');
       btn.className = 'pick-btn' + (isCurrent ? ' current' : '');
 
-      var teamLabel = team === 'A' ? 'Team A' : 'Team B';
+      var teamLbl = team === 'A' ? 'Team A' : 'Team B';
       var displayName = name || '— Empty —';
 
       btn.innerHTML =
         '<div class="pick-dot"></div>' +
-        '<div><div class="pick-team-label">' + (name ? teamLabel : '') + '</div>' +
+        '<div><div class="pick-team-label">' + (name ? teamLbl : '') + '</div>' +
         '<div class="pick-name">' + esc(displayName) + '</div></div>';
 
-      (function(n) {
-        btn.onclick = function() { assignPosition(cellId, n); };
-      })(name);
-
+      (function(n) { btn.onclick = function() { assignPosition(cellId, n); }; })(name);
       list.appendChild(btn);
     }
 
@@ -487,13 +516,21 @@
     var otherCellId = team + '-' + otherSide;
     var obj = team === 'A' ? teamA : teamB;
 
-    // Assign chosen player to this box
     courtPositions[cellId] = name;
-
-    // Auto-assign the other player to the other box (doubles only)
     if (gameType === 'doubles' && obj.p2 && name !== null) {
       var otherPlayer = (name === obj.p1) ? obj.p2 : obj.p1;
       courtPositions[otherCellId] = otherPlayer;
+    }
+
+    // After all swaps, re-read who is now in the active server box
+    // and sync currentServerName. This correctly handles the case where
+    // tapping A-left causes A-right (the server box) to get a new occupant.
+    var servingScore = currentServer === 'A' ? scoreA : scoreB;
+    var activeServerSide = (servingScore % 2 === 0) ? 'right' : 'left';
+    var activeCell = currentServer + '-' + activeServerSide;
+    var occupant = courtPositions[activeCell];
+    if (occupant !== null && occupant !== undefined) {
+      currentServerName = occupant;
     }
 
     closePosOverlay();
@@ -524,9 +561,7 @@
         '<div class="pick-dot"></div>' +
         '<div><div class="pick-team-label">' + esc(p.teamLabel) + '</div>' +
         '<div class="pick-name">' + esc(p.name) + '</div></div>';
-      (function(pl) {
-        btn.onclick = function() { selectServer(pl); };
-      })(p);
+      (function(pl) { btn.onclick = function() { selectServer(pl); }; })(p);
       list.appendChild(btn);
     }
 
@@ -535,10 +570,12 @@
 
   function buildAllPlayers() {
     var list = [];
-    list.push({ name: teamA.p1, team: 'A', teamLabel: 'Team A' });
-    if (gameType === 'doubles' && teamA.p2) list.push({ name: teamA.p2, team: 'A', teamLabel: 'Team A' });
-    list.push({ name: teamB.p1, team: 'B', teamLabel: 'Team B' });
-    if (gameType === 'doubles' && teamB.p2) list.push({ name: teamB.p2, team: 'B', teamLabel: 'Team B' });
+    var labelA = teamLabel('A');
+    var labelB = teamLabel('B');
+    list.push({ name: teamA.p1, team: 'A', teamLabel: labelA });
+    if (gameType === 'doubles' && teamA.p2) list.push({ name: teamA.p2, team: 'A', teamLabel: labelA });
+    list.push({ name: teamB.p1, team: 'B', teamLabel: labelB });
+    if (gameType === 'doubles' && teamB.p2) list.push({ name: teamB.p2, team: 'B', teamLabel: labelB });
     return list;
   }
 
@@ -546,30 +583,39 @@
     currentServer = player.team;
     currentServerName = player.name;
 
-    // Auto-update court: put selected server on the correct side,
-    // and put the other player on the other side
+    // Server's score parity decides which box the server stands in
     var serverScore = currentServer === 'A' ? scoreA : scoreB;
-    var side = (serverScore % 2 === 0) ? 'right' : 'left';
-    var otherSide = side === 'left' ? 'right' : 'left';
-    var obj = player.team === 'A' ? teamA : teamB;
+    var serverSide  = (serverScore % 2 === 0) ? 'right' : 'left';
+    var serverOther = serverSide === 'right' ? 'left' : 'right';
 
-    courtPositions[player.team + '-' + side] = player.name;
-    if (gameType === 'doubles' && obj.p2) {
-      var otherPlayer = (player.name === obj.p1) ? obj.p2 : obj.p1;
-      courtPositions[player.team + '-' + otherSide] = otherPlayer;
+    // BWF rule: receiver stands diagonally opposite the server
+    var receiverSide  = serverSide;   // same column as server (diagonal = same side)
+    var receiverOther = serverOther;
+
+    var servingTeam   = player.team === 'A' ? teamA : teamB;
+    var receivingTeam = player.team === 'A' ? teamB : teamA;
+    var receivingKey  = player.team === 'A' ? 'B' : 'A';
+
+    // --- Serving team ---
+    courtPositions[player.team + '-' + serverSide] = player.name;
+    if (gameType === 'doubles' && servingTeam.p2) {
+      var servingPartner = (player.name === servingTeam.p1) ? servingTeam.p2 : servingTeam.p1;
+      courtPositions[player.team + '-' + serverOther] = servingPartner;
+    }
+
+    // --- Receiving team ---
+    // In singles and doubles, put receiver (p1 of receiving team) diagonally opposite
+    courtPositions[receivingKey + '-' + receiverSide] = receivingTeam.p1;
+    if (gameType === 'doubles' && receivingTeam.p2) {
+      courtPositions[receivingKey + '-' + receiverOther] = receivingTeam.p2;
     }
 
     closeServerPicker();
     updateDisplay();
   }
 
-  function closeServerPicker() {
-    document.getElementById('serverOverlay').className = 'overlay';
-  }
-
-  function overlayClickServer(e) {
-    if (e.target === document.getElementById('serverOverlay')) closeServerPicker();
-  }
+  function closeServerPicker() { document.getElementById('serverOverlay').className = 'overlay'; }
+  function overlayClickServer(e) { if (e.target === document.getElementById('serverOverlay')) closeServerPicker(); }
 
   // ── GAME LOGIC ───────────────────────────────────────────
   function addPoint(player) {
@@ -584,9 +630,7 @@
     if (player === 'A') scoreA++;
     else scoreB++;
 
-    // Winning team gets serve; keep same player unless they change it
     currentServer = player;
-    // If server was from losing team, switch to winner's p1
     var winnerTeam = player === 'A' ? teamA : teamB;
     var loserTeam  = player === 'A' ? teamB : teamA;
     if (currentServerName === loserTeam.p1 || currentServerName === loserTeam.p2) {
@@ -631,14 +675,11 @@
     document.getElementById('blockA').className = 'score-block' + (scoreA > scoreB ? ' leading' : '');
     document.getElementById('blockB').className = 'score-block' + (scoreB > scoreA ? ' leading' : '');
 
-    // Server side & position
     var serverScore = currentServer === 'A' ? scoreA : scoreB;
     var side = (serverScore % 2 === 0) ? 'Right' : 'Left';
     document.getElementById('serverInfo').innerHTML = 'Server: <b>' + esc(currentServerName) + ' (' + side + ')</b>';
 
-    // Update court cells
     var cellIds = ['A-left', 'A-right', 'B-left', 'B-right'];
-    // Determine which cell is the active (serving) cell
     var activeCell = currentServer + '-' + side.toLowerCase();
 
     for (var i = 0; i < cellIds.length; i++) {
@@ -653,13 +694,10 @@
       else if (assigned) cls += ' has-player';
       el.className = cls;
 
-      // Restore border-right on left cells
       if (cid.indexOf('-left') !== -1) el.style.borderRight = '2px solid #2a3346';
-
       nameEl.textContent = assigned ? shortName(assigned) : '—';
     }
 
-    // Rally dots
     var html = '';
     for (var j = 0; j < rallyHistory.length; j++) {
       html += '<div class="rdot rdot-' + rallyHistory[j].toLowerCase() + '"></div>';
@@ -671,16 +709,23 @@
     document.getElementById('btnB').disabled = gameOver;
 
     if (gameOver) {
-      var winnerLabel = scoreA > scoreB
-        ? (teamA.p2 ? teamA.p1 + ' & ' + teamA.p2 : teamA.p1)
-        : (teamB.p2 ? teamB.p1 + ' & ' + teamB.p2 : teamB.p1);
-      document.getElementById('winnerName').textContent = winnerLabel + ' Wins!';
+      var winnerObj = scoreA > scoreB ? teamA : teamB;
+      var winnerDisplay;
+      if (gameType === 'doubles') {
+        // Doubles: show custom team name, or fallback "Team A" / "Team B"
+        winnerDisplay = winnerObj.name
+          ? winnerObj.name
+          : (winnerObj === teamA ? 'Team A' : 'Team B');
+      } else {
+        // Singles: show player name
+        winnerDisplay = winnerObj.p1;
+      }
+      document.getElementById('winnerName').textContent = winnerDisplay + ' Wins!';
       document.getElementById('winnerBanner').className = 'winner-banner visible';
     }
   }
 
   function shortName(name) {
-    // First name only, max 10 chars
     var first = name.split(' ')[0];
     return first.length > 10 ? first.substring(0, 9) + '…' : first;
   }
@@ -690,92 +735,266 @@
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  // ── SHARE ────────────────────────────────────────────────
+  // ── SHARE (custom canvas image → native share sheet) ──────
+  function openShare() {
+    var toast = document.getElementById('shareToast');
+    toast.style.display = 'block';
+
+    setTimeout(function() {
+      try {
+        var canvas = buildShareCanvas();
+        toast.style.display = 'none';
+        canvas.toBlob(function(blob) {
+          var file = new File([blob], 'badminton-result.png', { type: 'image/png' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: 'Badminton Match Result' })
+              .catch(function(err) { if (err.name !== 'AbortError') fallbackDownload(canvas); });
+          } else if (navigator.share) {
+            navigator.share({ title: 'Badminton Match Result', text: buildShareText() })
+              .catch(function(err) { if (err.name !== 'AbortError') fallbackDownload(canvas); });
+          } else {
+            fallbackDownload(canvas);
+          }
+        }, 'image/png');
+      } catch(e) {
+        toast.style.display = 'none';
+        alert('Could not generate share image.');
+      }
+    }, 50);
+  }
+
+  function buildShareCanvas() {
+    var W = 800;
+    var canvas = document.createElement('canvas');
+    var ctx    = canvas.getContext('2d');
+
+    // ── Data ─────────────────────────────────────────────────
+    var isDoubles  = gameType === 'doubles';
+    var typeLabel  = isDoubles ? 'DOUBLES' : 'SINGLES';
+    var teamLabelA = isDoubles ? (teamA.name || 'Team A') : teamA.p1;
+    var teamLabelB = isDoubles ? (teamB.name || 'Team B') : teamB.p1;
+    var subA       = isDoubles ? (teamA.p1 + (teamA.p2 ? ' & ' + teamA.p2 : '')) : '';
+    var subB       = isDoubles ? (teamB.p1 + (teamB.p2 ? ' & ' + teamB.p2 : '')) : '';
+    var leadA      = scoreA > scoreB;
+    var leadB      = scoreB > scoreA;
+    var winner     = '';
+    if (gameOver) {
+      var wo = leadA ? teamA : teamB;
+      winner = isDoubles ? (wo.name || (wo === teamA ? 'Team A' : 'Team B')) : wo.p1;
+    }
+    var totalDots  = rallyHistory.length;
+
+    // ── Fixed Y anchors (nothing overlaps) ───────────────────
+    // Each section has a known start Y so scores NEVER touch names.
+    var Y_TOPLINE   = 0;
+    var Y_LOGO      = 52;    // "🏸 BADMINTON"
+    var Y_SUBTITLE  = 78;    // "MATCH RESULT"
+    var Y_BADGE     = 118;   // SINGLES/DOUBLES pill
+    var Y_TEAMNAME  = 170;   // team/player names
+    var Y_PLAYERSUB = 196;   // doubles player sub-names
+    var Y_SCORE     = isDoubles ? 290 : 270;  // big scores — well below names
+    var Y_DIVIDER   = isDoubles ? 360 : 340;
+    var Y_WINNER    = Y_DIVIDER + 50;         // winner block
+    var Y_RALLYHDR  = (gameOver ? Y_WINNER + 56 : Y_DIVIDER + 40);
+
+    // Rally dots
+    var PAD        = 56;
+    var dotR       = 7, dotGap = 22;
+    var dotsPerRow = Math.floor((W - PAD*2) / dotGap);
+    var dotRows    = totalDots > 0 ? Math.ceil(totalDots / dotsPerRow) : 0;
+    var Y_DOTS     = Y_RALLYHDR + 24;
+    var Y_LEGEND   = Y_DOTS + dotRows * dotGap + 18;
+    var H          = Y_LEGEND + (totalDots > 0 ? 44 : 16);
+
+    canvas.width  = W;
+    canvas.height = H;
+
+    // ── Background ───────────────────────────────────────────
+    ctx.fillStyle = '#0a0c10';
+    ctx.fillRect(0, 0, W, H);
+
+    // top accent line
+    var grad = ctx.createLinearGradient(0, 0, W, 0);
+    grad.addColorStop(0,   'rgba(200,247,58,0)');
+    grad.addColorStop(0.5, '#c8f73a');
+    grad.addColorStop(1,   'rgba(200,247,58,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, 3);
+
+    // ── Logo ─────────────────────────────────────────────────
+    ctx.textAlign = 'center';
+    ctx.font      = 'bold 30px "Courier New", monospace';
+    ctx.fillStyle = '#c8f73a';
+    ctx.fillText('BADMINTON', W/2 + 20, Y_LOGO);
+    // racket emoji separately (canvas emoji rendering)
+    ctx.font = '26px serif';
+    ctx.fillText('🏸', W/2 - 90, Y_LOGO);
+
+    ctx.font      = '11px "Courier New", monospace';
+    ctx.fillStyle = '#5a6478';
+    ctx.fillText('MATCH  RESULT', W/2, Y_SUBTITLE);
+
+    // ── Badge ────────────────────────────────────────────────
+    var bW = 130, bH = 28;
+    roundRect(ctx, W/2 - bW/2, Y_BADGE - 20, bW, bH, 14);
+    ctx.fillStyle = '#12161e'; ctx.fill();
+    ctx.strokeStyle = '#2a3346'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.font = '11px "Courier New", monospace';
+    ctx.fillStyle = '#5a6478';
+    ctx.fillText(typeLabel, W/2, Y_BADGE - 2);
+
+    // ── Team names ───────────────────────────────────────────
+    ctx.font      = 'bold 24px Arial, sans-serif';
+    ctx.fillStyle = '#e8edf5';
+    ctx.textAlign = 'center';
+    ctx.fillText(teamLabelA, W/4, Y_TEAMNAME);
+    ctx.fillText(teamLabelB, W*3/4, Y_TEAMNAME);
+
+    // VS
+    ctx.font      = 'bold 12px "Courier New", monospace';
+    ctx.fillStyle = '#2a3346';
+    ctx.fillText('VS', W/2, Y_TEAMNAME);
+
+    // Doubles player sub-names
+    if (isDoubles) {
+      ctx.font      = '13px Arial, sans-serif';
+      ctx.fillStyle = '#5a6478';
+      ctx.fillText(subA, W/4,   Y_PLAYERSUB);
+      ctx.fillText(subB, W*3/4, Y_PLAYERSUB);
+    }
+
+    // Horizontal rule under names
+    var ruleY = isDoubles ? Y_PLAYERSUB + 20 : Y_TEAMNAME + 18;
+    ctx.strokeStyle = '#1e2533'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(PAD, ruleY); ctx.lineTo(W - PAD, ruleY);
+    ctx.stroke();
+
+    // ── Scores ───────────────────────────────────────────────
+    // Draw score A
+    ctx.font      = 'bold 96px Arial, sans-serif';
+    ctx.fillStyle = leadA ? '#c8f73a' : '#e8edf5';
+    ctx.textAlign = 'center';
+    ctx.fillText(String(scoreA), W/4, Y_SCORE);
+
+    // Dash
+    ctx.font      = 'bold 44px Arial, sans-serif';
+    ctx.fillStyle = '#2a3346';
+    ctx.fillText('—', W/2, Y_SCORE - 14);
+
+    // Draw score B
+    ctx.font      = 'bold 96px Arial, sans-serif';
+    ctx.fillStyle = leadB ? '#c8f73a' : '#e8edf5';
+    ctx.fillText(String(scoreB), W*3/4, Y_SCORE);
+
+    // ── Divider ──────────────────────────────────────────────
+    ctx.strokeStyle = '#1e2533'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(PAD, Y_DIVIDER); ctx.lineTo(W - PAD, Y_DIVIDER);
+    ctx.stroke();
+
+    // ── Winner ───────────────────────────────────────────────
+    if (gameOver && winner) {
+      ctx.font      = '11px "Courier New", monospace';
+      ctx.fillStyle = '#5a6478';
+      ctx.textAlign = 'center';
+      ctx.fillText('🏆   WINNER', W/2, Y_WINNER);
+      ctx.font      = 'bold 28px Arial, sans-serif';
+      ctx.fillStyle = '#c8f73a';
+      ctx.fillText(winner.toUpperCase(), W/2, Y_WINNER + 34);
+    }
+
+    // ── Rally header ─────────────────────────────────────────
+    ctx.font      = '11px "Courier New", monospace';
+    ctx.fillStyle = '#5a6478';
+    ctx.textAlign = 'center';
+    ctx.fillText('RALLY HISTORY  ·  ' + totalDots + ' POINTS', W/2, Y_RALLYHDR);
+
+    // ── Dots ─────────────────────────────────────────────────
+    if (totalDots > 0) {
+      var rowWidth = Math.min(totalDots, dotsPerRow) * dotGap;
+      var startX   = W/2 - rowWidth/2 + dotR;
+
+      for (var i = 0; i < totalDots; i++) {
+        var cx = startX + (i % dotsPerRow) * dotGap;
+        var cy = Y_DOTS  + Math.floor(i / dotsPerRow) * dotGap;
+        ctx.beginPath();
+        ctx.arc(cx, cy, dotR, 0, Math.PI * 2);
+        ctx.fillStyle = rallyHistory[i] === 'A' ? '#c8f73a' : '#ff4f64';
+        ctx.fill();
+      }
+
+      // ── Legend ───────────────────────────────────────────────
+      ctx.font = '12px "Courier New", monospace';
+      var wA   = ctx.measureText(teamLabelA).width;
+      var wB   = ctx.measureText(teamLabelB).width;
+      var legGap  = 32;
+      var totalLW = 10 + 8 + wA + legGap + 10 + 8 + wB;
+      var lx      = W/2 - totalLW/2;
+      var ly      = Y_LEGEND;
+
+      ctx.beginPath(); ctx.arc(lx+5, ly-4, 5, 0, Math.PI*2);
+      ctx.fillStyle = '#c8f73a'; ctx.fill();
+      ctx.fillStyle = '#5a6478'; ctx.textAlign = 'left';
+      ctx.fillText(teamLabelA, lx+14, ly);
+
+      lx += 14 + wA + legGap;
+      ctx.beginPath(); ctx.arc(lx+5, ly-4, 5, 0, Math.PI*2);
+      ctx.fillStyle = '#ff4f64'; ctx.fill();
+      ctx.fillStyle = '#5a6478';
+      ctx.fillText(teamLabelB, lx+14, ly);
+    }
+
+    return canvas;
+  }
+
+  // Helper: rounded rect path
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
   function buildShareText() {
     var typeLabel = gameType === 'doubles' ? 'Doubles' : 'Singles';
-    var teamALabel = teamA.p2 ? teamA.p1 + ' & ' + teamA.p2 : teamA.p1;
-    var teamBLabel = teamB.p2 ? teamB.p1 + ' & ' + teamB.p2 : teamB.p1;
-    var winner = scoreA > scoreB ? teamALabel : (scoreB > scoreA ? teamBLabel : 'Tied');
+    var teamALabel = gameType === 'doubles'
+      ? (teamA.name ? teamA.name + ' (' + teamA.p1 + ' & ' + teamA.p2 + ')' : teamA.p1 + ' & ' + teamA.p2)
+      : teamA.p1;
+    var teamBLabel = gameType === 'doubles'
+      ? (teamB.name ? teamB.name + ' (' + teamB.p1 + ' & ' + teamB.p2 + ')' : teamB.p1 + ' & ' + teamB.p2)
+      : teamB.p1;
+    var winner = scoreA > scoreB
+      ? (teamA.name || (teamA.p2 ? teamA.p1 + ' & ' + teamA.p2 : teamA.p1))
+      : scoreB > scoreA
+        ? (teamB.name || (teamB.p2 ? teamB.p1 + ' & ' + teamB.p2 : teamB.p1))
+        : 'Tied';
     return [
       '🏸 BADMINTON MATCH RESULT',
-      '─────────────────────',
       'Type: ' + typeLabel,
-      '',
-      teamALabel + '  vs  ' + teamBLabel,
-      '',
-      '📊 Score: ' + scoreA + ' - ' + scoreB,
-      gameOver ? '🏆 Winner: ' + winner : '⏳ Match in progress',
-      '',
-      'Total rallies: ' + rallyHistory.length,
-      '─────────────────────'
+      teamALabel + ' vs ' + teamBLabel,
+      'Score: ' + scoreA + ' - ' + scoreB,
+      gameOver ? 'Winner: ' + winner : 'Match in progress',
+      'Rallies: ' + rallyHistory.length
     ].join('\n');
   }
 
-  function openShare() {
-    document.getElementById('shareText').textContent = buildShareText();
-    document.getElementById('copiedMsg').textContent = '';
-    document.getElementById('shareOverlay').className = 'overlay open';
+  function fallbackDownload(canvas) {
+    // Desktop fallback: download the image
+    var link = document.createElement('a');
+    link.download = 'badminton-result.png';
+    link.href = canvas.toDataURL('image/png');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
-
-  function closeShare() { document.getElementById('shareOverlay').className = 'overlay'; }
-  function overlayClickShare(e) { if (e.target === document.getElementById('shareOverlay')) closeShare(); }
-
-  function copyResult() {
-    var text = buildShareText();
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function() { flashCopied(); });
-    } else {
-      var ta = document.createElement('textarea');
-      ta.value = text; document.body.appendChild(ta); ta.select();
-      document.execCommand('copy'); document.body.removeChild(ta);
-      flashCopied();
-    }
-  }
-
-  function flashCopied() {
-    document.getElementById('copiedMsg').textContent = '✓ Copied!';
-    setTimeout(function() { document.getElementById('copiedMsg').textContent = ''; }, 2000);
-  }
-
-  function shareWhatsApp() {
-    var text = buildShareText();
-
-    // Option 1: Web Share API — works in Android WebView + mobile browsers
-    // Opens native share sheet where user can pick WhatsApp
-    if (navigator.share) {
-      navigator.share({ text: text })
-        .catch(function(e) { fallbackCopy(text); });
-      return;
-    }
-
-    // Option 2: https wa.me link — works in desktop browsers
-    var encoded = encodeURIComponent(text);
-    var a = document.createElement('a');
-    a.href = 'https://wa.me/?text=' + encoded;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function() { document.body.removeChild(a); }, 300);
-  }
-
-  function fallbackCopy(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function() {
-        alert('Copied! Now paste it in WhatsApp.');
-      });
-    } else {
-      var ta = document.createElement('textarea');
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      alert('Copied! Now paste it in WhatsApp.');
-    }
-  }
-
-  
 </script>
 </body>
 </html>
